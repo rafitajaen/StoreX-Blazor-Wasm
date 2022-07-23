@@ -26,6 +26,11 @@ public static class FSHResource
     public const string RoleClaims = nameof(RoleClaims);
     public const string Products = nameof(Products);
     public const string Brands = nameof(Brands);
+
+    // STOREX new RESOURCES
+    public const string Suppliers = nameof(Suppliers);
+    public const string Orders = nameof(Orders);
+    public const string OrderProducts = nameof(OrderProducts);
 }
 
 public static class FSHPermissions
@@ -64,7 +69,30 @@ public static class FSHPermissions
         new("View Tenants", FSHAction.View, FSHResource.Tenants, IsRoot: true),
         new("Create Tenants", FSHAction.Create, FSHResource.Tenants, IsRoot: true),
         new("Update Tenants", FSHAction.Update, FSHResource.Tenants, IsRoot: true),
-        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true)
+        new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true),
+
+        // STOREX new PERMISSIONS
+        new("View   Suppliers", FSHAction.View,   FSHResource.Suppliers, IsBasic: true),
+        new("Search Suppliers", FSHAction.Search, FSHResource.Suppliers, IsBasic: true),
+        new("Create Suppliers", FSHAction.Create, FSHResource.Suppliers),
+        new("Update Suppliers", FSHAction.Update, FSHResource.Suppliers),
+        new("Delete Suppliers", FSHAction.Delete, FSHResource.Suppliers),
+        new("Export Suppliers", FSHAction.Export, FSHResource.Suppliers),
+
+        new("View   Orders", FSHAction.View,   FSHResource.Orders, IsBasic: true),
+        new("Search Orders", FSHAction.Search, FSHResource.Orders, IsBasic: true),
+        new("Create Orders", FSHAction.Create, FSHResource.Orders),
+        new("Update Orders", FSHAction.Update, FSHResource.Orders),
+        new("Delete Orders", FSHAction.Delete, FSHResource.Orders),
+        new("Export Orders", FSHAction.Export, FSHResource.Orders),
+
+        new("View   Order Products", FSHAction.View,   FSHResource.OrderProducts, IsBasic: true),
+        new("Search Order Products", FSHAction.Search, FSHResource.OrderProducts, IsBasic: true),
+        new("Create Order Products", FSHAction.Create, FSHResource.OrderProducts),
+        new("Update Order Products", FSHAction.Update, FSHResource.OrderProducts),
+        new("Delete Order Products", FSHAction.Delete, FSHResource.OrderProducts),
+        new("Export Order Products", FSHAction.Export, FSHResource.OrderProducts),
+
     };
 
     public static IReadOnlyList<FSHPermission> All { get; } = new ReadOnlyCollection<FSHPermission>(_all);

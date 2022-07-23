@@ -24,6 +24,10 @@ public partial class NavMenu
     private bool _canViewTenants;
     private bool CanViewAdministrationGroup => _canViewUsers || _canViewRoles || _canViewTenants;
 
+    // StoreX NavMenu Cascading Filters
+    private bool _canViewSuppliers;
+    private bool _canViewOrders;
+
     protected override async Task OnParametersSetAsync()
     {
         _hangfireUrl = Config[ConfigNames.ApiBaseUrl] + "jobs";
@@ -35,5 +39,9 @@ public partial class NavMenu
         _canViewProducts = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Products);
         _canViewBrands = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Brands);
         _canViewTenants = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Tenants);
+
+        // StoreX Permissions
+        _canViewSuppliers = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Suppliers);
+        _canViewOrders = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Orders);
     }
 }

@@ -1,0 +1,86 @@
+<MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
+    @if(_emptySupplier)
+    {
+        <MudCardContent>
+            <MudButton OnClick="@HandleOnClick">Find a Supplier</MudButton>
+        </MudCardContent>
+    }
+    else
+    {
+        <MudCardHeader>
+            <CardHeaderActions>
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            @if (string.IsNullOrEmpty(this.selectedSupplier.Id.ToString()))
+            {
+                <MudAvatar Size="Size.Medium" Color="Color.Primary" Class="ma-2">@this.selectedSupplier.Name?.ToUpper().FirstOrDefault()
+                </MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Image="@this.selectedSupplier.ImagePath" />
+            }
+            <MudText Typo="Typo.body1">@this.selectedSupplier.Name</MudText>
+            <MudText Typo="Typo.caption">@this.selectedSupplier.Email</MudText>
+            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+        </MudCardContent>
+    }
+
+
+</MudCard>
+
+
+@code
+{
+    [Parameter]
+    public string? Class { get; set; }
+    [Parameter]
+    public string? Style { get; set; }
+    [Inject]
+    protected ISuppliersClient SuppliersClient { get; set; } = default!;
+
+
+
+    private SupplierDto selectedSupplier { get; set; } = new SupplierDto();
+    private bool _emptySupplier { get; set; } = true;
+
+    private async Task HandleOnClick()
+    {
+        selectedSupplier.Name = "Default Name";
+
+        await Task.Delay(50);
+        var guid = new Guid("852fccc9-bf45-46de-a6d7-08da6be39ff7");
+
+        selectedSupplier = await SuppliersClient.GetAsync(guid);
+
+
+
+
+        _emptySupplier = false;
+        //await LoadSupplierData();
+
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+
+        }
+    }
+    private async Task LoadSupplierData()
+    {
+
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+    }
+}
