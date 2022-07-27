@@ -1,0 +1,69 @@
+@inject IStringLocalizer<SimpleProductsTable> L
+@inject IOrderProductsClient OrderProductsClient
+
+<MudText Typo="Typo.subtitle2"><strong>SelectedOrder:</strong> @SelectedOrder.Name</MudText>
+
+<EntityTable @ref="_table" TEntity="OrderProductDetailsDto" TId="Guid" TRequest="UpdateOrderProductRequest" Context="@Context" >
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Brand Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Product.Name)" @bind-Value="context.Product.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Product.Description)" @bind-Value="context.Product.Description"
+                Label="@L["Description"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Quantity)" @bind-Value="context.Quantity"
+                Label="@L["Quantity"]" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+@code
+{
+    [Parameter] public OrderDto SelectedOrder { get; set; } = default!;
+
+
+    protected EntityServerTableContext<OrderProductDetailsDto, Guid, UpdateOrderProductRequest> Context { get; set; } = default!;
+    private EntityTable<OrderProductDetailsDto, Guid, UpdateOrderProductRequest> _table = default!;
+    private OrderProductDetailsDto selectedOrder {get; set;} = default!;
+
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["OrderProduct"],
+            entityNamePlural: L["OrderProducts"],
+            entityResource: FSHResource.OrderProducts,
+            fields: new()
+            {
+                new(op => op.OrderId, L["OrderId"], "OrderId"),
+                new(op => op.Product.Name, L["Name"], "Product.Name"),
+                new(op => op.Product.Description, L["Description"], "Product.Description"),
+                new(op => op.Quantity, L["Quantity"], "Quantity"),
+            },
+            idFunc: op => op.OrderId,
+            searchFunc: async filter =>
+            {
+                var orderProductFilter = filter.Adapt<SearchOrderProductsRequest>();
+
+                if (SelectedOrder.Id != Guid.Empty) orderProductFilter.OrderId = SelectedOrder.Id;
+                else orderProductFilter.OrderId = null;
+
+                var result = await OrderProductsClient.SearchAsync(orderProductFilter);
+                return result.Adapt<PaginationResponse<OrderProductDetailsDto>>();
+
+            },
+            createFunc: async op => await OrderProductsClient.CreateAsync(op.Adapt<CreateOrderProductRequest>()),
+            updateFunc: async (id, order) => await OrderProductsClient.UpdateAsync(id, order),
+            deleteFunc: async id => await OrderProductsClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+}

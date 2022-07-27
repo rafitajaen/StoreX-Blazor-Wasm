@@ -1,0 +1,99 @@
+@page "/store/warehouse"
+
+@attribute [MustHavePermission(FSHAction.View, FSHResource.Suppliers)]
+
+@inject IStringLocalizer<Warehouse> L
+@inject IOrdersClient OrdersClient
+@inject ISuppliersClient SuppliersClient
+
+<MudGrid>
+    <MudItem xs="12" sm="4">
+        <FshTitle Title="@L["Warehouse"]" Description="@L["Manage Suppliers, Orders and Products."]" />
+        <MudText Typo="Typo.subtitle2"><strong>searchSupplierId:</strong> @searchSupplierId</MudText>
+        <MudText Typo="Typo.subtitle2"><strong>selectedSupplier:</strong> @selectedSupplier.Name</MudText>
+        <MudText Typo="Typo.subtitle2"><strong>viewAll:</strong> @viewAll</MudText>
+    </MudItem>
+
+    @if(viewAll)
+    {
+        <MudItem xs="12" sm="8">
+            <MudText Typo="Typo.overline">SUPPLIER</MudText>
+            <SupplierCard SelectedSupplier="@selectedSupplier" ViewAll=@viewAll Style="my-6 mr-8"/>
+            <MudButton OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">Find a Supplier</MudButton>
+        </MudItem>
+
+        @if(isRefreshed)
+        {
+            <MudItem xs="12" sm="6">
+            <MudText Typo="Typo.overline">ORDERS</MudText>
+            <SimpleOrderTable SelectedSupplier="@selectedSupplier" SelectedItem="selectedOrder" SelectedItemChanged="OnSelectedItemChanged"/>
+        </MudItem>
+        }
+        @if(isProductsRefreshed)
+        {
+            <MudItem xs="12" sm="6">
+                <MudText Typo="Typo.overline">PRODUCTS</MudText>
+                <SimpleProductsTable SelectedOrder="@selectedOrder"/>
+            </MudItem>
+        }
+    }
+    else
+    {
+        <MudItem xs="12" sm="12"  Class="d-flex flex-column align-center justify-center gap-1 my-20">
+            <MudButton OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">Find a Supplier</MudButton>
+            <MudText  Typo="Typo.overline">or</MudText>
+            <MudButton  Variant="Variant.Text" DisableElevation="true" Color="Color.Primary" OnClick="@HandleViewAll">View all orders</MudButton>
+
+            <MudMessageBox @ref="mbox" Title="Find a Supplier" CancelText="Cancel">
+                <MessageContent>
+                    <SupplierAutocomplete @bind-Value="@searchSupplierId"/>
+                </MessageContent>
+            </MudMessageBox>
+        </MudItem>
+    }
+
+
+</MudGrid>
+
+
+@code
+{
+    private OrderDto selectedOrder {get; set;} = new OrderDto {Name="MegaDefault Order"};
+    public Guid searchSupplierId { get; set; }
+    private SupplierDto selectedSupplier { get; set; } = new SupplierDto {Name="Default Supplier"};
+    private bool viewAll {get; set;} = false;
+    private bool isRefreshed {get; set;} = false;
+    private bool isProductsRefreshed { get; set; } = false;
+    private MudMessageBox mbox { get; set; } = default!;
+
+    private async Task OnFindASupplier()
+    {
+        isRefreshed=false;
+        bool? result = await mbox.Show();
+
+        selectedSupplier = await SuppliersClient.GetAsync(searchSupplierId);
+
+        if (searchSupplierId != Guid.Empty) viewAll = true;
+
+        // await _simpleOrderTable.ReloadDataAsync();
+        isRefreshed=true;
+        StateHasChanged();
+    }
+
+    private async Task OnSelectedItemChanged(OrderDto item)
+    {
+	    isProductsRefreshed=false;
+        selectedOrder = item ;
+        await Task.Delay(50);
+        isProductsRefreshed=true;
+    }
+
+
+
+    private void HandleViewAll()
+    {
+        viewAll=true;
+        searchSupplierId = Guid.Empty;
+    }
+
+}

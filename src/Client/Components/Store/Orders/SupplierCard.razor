@@ -1,0 +1,59 @@
+<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier.Id: </strong>@SelectedSupplier.Id</MudText>
+<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier: </strong>@SelectedSupplier.Name</MudText>
+<MudText Typo="Typo.subtitle2"><strong>ViewAll: </strong>@ViewAll</MudText>
+
+<MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
+
+    @if(ViewAll && SelectedSupplier.Id != Guid.Empty)
+    {
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                 @if (string.IsNullOrEmpty(SelectedSupplier.Id.ToString()))
+                {
+                    <MudAvatar Size="Size.Large" Color="Color.Primary" Class="ma-2">@SelectedSupplier.Name?.ToUpper().FirstOrDefault()</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Size="Size.Large" Image="@SelectedSupplier.ImagePath" />
+                }
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@SelectedSupplier.Name</MudText>
+                <MudText Typo="Typo.caption">@SelectedSupplier.Email</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudSpacer />
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+        </MudCardContent>
+    }
+    else
+    {
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.False" Height="40px" Width="40px"/>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudSkeleton Animation="Animation.False" Width="40%" />
+                <MudSkeleton Animation="Animation.False" Width="60%" />
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+                <MudSkeleton Width="80%" Animation="Animation.False"/>
+                <MudSkeleton Width="60%" Animation="Animation.False"/>
+        </MudCardContent>
+    }
+</MudCard>
+
+
+@code
+{
+    [Parameter]    public string? Class { get; set; }
+    [Parameter]    public string? Style { get; set; }
+    [Parameter]    public bool ViewAll {get; set;}
+    [Parameter]    public SupplierDto SelectedSupplier { get; set; } = default!;
+
+}

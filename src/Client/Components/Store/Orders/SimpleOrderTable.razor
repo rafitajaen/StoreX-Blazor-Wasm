@@ -1,0 +1,67 @@
+@inject IStringLocalizer<SimpleOrderTable> L
+@inject IOrdersClient OrdersClient
+
+<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier:</strong> @SelectedSupplier.Name</MudText>
+<MudText Typo="Typo.subtitle2"><strong>SelectedOrder:</strong> @SelectedItem.Name</MudText>
+
+<EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Brand Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
+                Label="@L["Description"]" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+@code
+{
+    [Parameter] public SupplierDto SelectedSupplier {get; set; } = default!;
+    [Parameter] public OrderDto SelectedItem { get; set; } = default!;
+    [Parameter] public EventCallback<OrderDto> SelectedItemChanged { get; set; }
+
+
+    protected EntityServerTableContext<OrderDto, Guid, UpdateOrderRequest> Context { get; set; } = default!;
+    private EntityTable<OrderDto, Guid, UpdateOrderRequest> _table = default!;
+
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Order"],
+            entityNamePlural: L["Orders"],
+            entityResource: FSHResource.Orders,
+            fields: new()
+            {
+                new(order => order.Id, L["Id"], "Id"),
+                new(order => order.Name, L["Name"], "Name"),
+                new(order => order.SupplierName, L["Supplier"], "Supplier.Name"),
+                new(order => order.Description, L["Description"], "Description"),
+            },
+            idFunc: order => order.Id,
+            searchFunc: async filter =>
+            {
+                var orderFilter = filter.Adapt<SearchOrdersRequest>();
+
+                if(SelectedSupplier.Id != Guid.Empty) orderFilter.SupplierId = SelectedSupplier.Id;
+                else orderFilter.SupplierId = null;
+
+                var result = await OrdersClient.SearchAsync(orderFilter);
+
+                return result.Adapt<PaginationResponse<OrderDto>>();
+            },
+            createFunc: async order => await OrdersClient.CreateAsync(order.Adapt<CreateOrderRequest>()),
+            updateFunc: async (id, order) => await OrdersClient.UpdateAsync(id, order),
+            deleteFunc: async id => await OrdersClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+}

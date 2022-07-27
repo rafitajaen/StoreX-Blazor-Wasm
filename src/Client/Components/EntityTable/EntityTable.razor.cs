@@ -318,4 +318,9 @@ public partial class EntityTable<TEntity, TId, TRequest>
             await ReloadDataAsync();
         }
     }
+
+    // StoreX - Extension of EntityTable
+    [Parameter] public TEntity SelectedItem { get; set; } = default!;
+    [Parameter] public EventCallback<TEntity> SelectedItemChanged { get; set; }
+
 }

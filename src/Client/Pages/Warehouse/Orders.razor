@@ -1,8 +1,0 @@
-@page "/orders"
-@attribute [MustHavePermission(FSHAction.View, FSHResource.Suppliers)]
-
-@inject IStringLocalizer<Orders> L
-
-<FshTitle Title="@L["Orders"]" Description="@L["Manage Orders and Products."]" />
-
-<SupplierCard />

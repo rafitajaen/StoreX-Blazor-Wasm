@@ -30,6 +30,7 @@ public static class FSHResource
     // STOREX new RESOURCES
     public const string Suppliers = nameof(Suppliers);
     public const string Orders = nameof(Orders);
+    public const string StoreProducts = nameof(StoreProducts);
     public const string OrderProducts = nameof(OrderProducts);
 }
 
@@ -72,6 +73,7 @@ public static class FSHPermissions
         new("Upgrade Tenant Subscription", FSHAction.UpgradeSubscription, FSHResource.Tenants, IsRoot: true),
 
         // STOREX new PERMISSIONS
+
         new("View   Suppliers", FSHAction.View,   FSHResource.Suppliers, IsBasic: true),
         new("Search Suppliers", FSHAction.Search, FSHResource.Suppliers, IsBasic: true),
         new("Create Suppliers", FSHAction.Create, FSHResource.Suppliers),
@@ -85,6 +87,13 @@ public static class FSHPermissions
         new("Update Orders", FSHAction.Update, FSHResource.Orders),
         new("Delete Orders", FSHAction.Delete, FSHResource.Orders),
         new("Export Orders", FSHAction.Export, FSHResource.Orders),
+
+        new("View   Store Products", FSHAction.View,   FSHResource.StoreProducts, IsBasic: true),
+        new("Search Store Products", FSHAction.Search, FSHResource.StoreProducts, IsBasic: true),
+        new("Create Store Products", FSHAction.Create, FSHResource.StoreProducts),
+        new("Update Store Products", FSHAction.Update, FSHResource.StoreProducts),
+        new("Delete Store Products", FSHAction.Delete, FSHResource.StoreProducts),
+        new("Export Store Products", FSHAction.Export, FSHResource.StoreProducts),
 
         new("View   Order Products", FSHAction.View,   FSHResource.OrderProducts, IsBasic: true),
         new("Search Order Products", FSHAction.Search, FSHResource.OrderProducts, IsBasic: true),

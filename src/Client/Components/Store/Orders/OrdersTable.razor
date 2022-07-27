@@ -1,0 +1,155 @@
+@inject IStringLocalizer<OrdersTable> L
+
+
+
+<EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="OrderViewModel" Context="@Context">
+
+    <AdvancedSearchContent>
+        <SupplierAutocomplete   />
+
+    </AdvancedSearchContent>
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Order Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField Label="@L["Name"]" For="@(() => context.Name)" @bind-Value="context.Name" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField Label="@L["Description"]" For="@(() => context.Description)"
+                @bind-Value="context.Description" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <SupplierAutocomplete For="@(() => context.SupplierId)"  OffsetY="true" />
+        </MudItem>
+
+        <MudItem xs="12" md="12">
+            <MudItem>
+                @if(!string.IsNullOrEmpty(context.ImageInBytes))
+                {
+                    <MudAvatar Image ="@context.ImageInBytes" Square="true" Style="height: auto; width: auto; max-height: 100%"> </MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Image="@(string.IsNullOrEmpty(@context.ImagePath) ? string.Empty : (Config[ConfigNames.ApiBaseUrl] + @context.ImagePath))" Square="true" Style="height: auto; width: auto; max-height: 100%"> </MudAvatar>
+                }
+            </MudItem>
+            <MudItem>
+                <div>
+                    <MudButton HtmlTag="label" DisableElevation Variant="Variant.Filled" Color="Color.Primary" Size="Size.Small"
+                        StartIcon="@Icons.Filled.CloudUpload" for="fileInput">
+                        @L["Upload"]
+                    </MudButton>
+                    @if(!Context.AddEditModal.IsCreate && !string.IsNullOrEmpty(context.ImagePath) && string.IsNullOrEmpty(context.ImageInBytes))
+                    {
+                        <MudButton HtmlTag="label" DisableElevation Variant="Variant.Filled" Color="Color.Info" Size="Size.Small" Target="_blank"
+                            StartIcon="@Icons.Filled.RemoveRedEye" Link="@(Config[ConfigNames.ApiBaseUrl] + @context.ImagePath)" Style="margin-left: 5px;" >
+                            @L["View"]
+                        </MudButton>
+
+                        <MudButton HtmlTag="label" DisableElevation Variant="Variant.Filled" Color="Color.Error" Size="Size.Small"
+                            StartIcon="@Icons.Filled.Delete" OnClick="SetDeleteCurrentImageFlag" Style="margin-left: 5px;" >
+                            @L["Delete"]
+                        </MudButton>
+                    }
+                    @if(!string.IsNullOrEmpty(context.ImageInBytes))
+                    {
+                        <MudButton HtmlTag="label" DisableElevation OnClick="ClearImageInBytes" Variant="Variant.Filled" Color="Color.Warning" Size="Size.Small" Target="_blank"
+                            StartIcon="@Icons.Filled.Clear" Style="margin-left: 5px;" >
+                            @L["Clear"]
+                        </MudButton>
+                    }
+                </div>
+                <InputFile id="fileInput" hidden OnChange="UploadFiles" />
+            </MudItem>
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+
+
+
+
+@*
+
+
+<EntityTable TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context">
+
+    <EditFormContent>
+        @if (!Context.AddEditModal.IsCreate)
+        {
+            <MudItem xs="12" md="6">
+                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Order Id"]" />
+            </MudItem>
+        }
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
+                Label="@L["Description"]" />
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.IsCompleted)" @bind-Value="context.IsCompleted"
+                Label="@L["Completed"]" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+<MudText Typo="Typo.caption">@SelectedSupplier.Id</MudText>
+
+@code
+{
+    protected EntityServerTableContext<OrderDto, Guid, UpdateOrderRequest> Context { get; set; } = default!;
+    [Parameter]
+    public SupplierDto SelectedSupplier { get; set; } = new SupplierDto();
+
+    private EntityTable<OrderDto, Guid, OrderViewModel> _table = default!;
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Order"],
+            entityNamePlural: L["Orders"],
+            entityResource: FSHResource.Orders,
+            fields: new()
+            {
+                new(order => order.Id, L["Id"], "Id"),
+                new(order => order.Name, L["Name"], "Name"),
+                new(prod => prod.SupplierName, L["Supplier"], "Supplier.Name"),
+                new(order => order.Description, L["Description"], "Description"),
+                new(order => order.IsCompleted, L["Complete"], "Complete"),
+            },
+            idFunc: order => order.Id,
+            searchFunc: async filter =>
+            {
+                var orderFilter = filter.Adapt<SearchOrdersRequest>();
+                orderFilter.SupplierId = SelectedSupplier.Id == default ? null : SelectedSupplier.Id;
+
+                var result = await OrdersClient.SearchAsync(orderFilter);
+
+                return result.Adapt<PaginationResponse<OrderDto>>();
+            },
+            createFunc: async order =>
+            {
+                order.SupplierId=SelectedSupplier.Id;
+                await OrdersClient.CreateAsync(order.Adapt<CreateOrderRequest>());
+            },
+            updateFunc: async (id, order) =>
+            {
+                order.SupplierId=SelectedSupplier.Id;
+                await OrdersClient.UpdateAsync(id, order);
+            },
+            deleteFunc: async id => await OrdersClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+
+}
+
+*@
