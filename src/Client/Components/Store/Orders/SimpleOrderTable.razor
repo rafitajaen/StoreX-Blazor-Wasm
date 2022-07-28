@@ -1,8 +1,7 @@
 @inject IStringLocalizer<SimpleOrderTable> L
 @inject IOrdersClient OrdersClient
 
-<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier:</strong> @SelectedSupplier.Name</MudText>
-<MudText Typo="Typo.subtitle2"><strong>SelectedOrder:</strong> @SelectedItem.Name</MudText>
+
 
 <EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
 

@@ -1,6 +1,14 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.2 - [Add a functional Warehouse Page]()
+## v0.0.3 - [Solve rendering side effects in Warehouse Page]()
+
+**branch :** _storex_
+
+    Edit:
+        - src/Client/Pages/Store : Warehouse Page
+        - src/Client/Components/Store : All Warehouses Components
+
+## v0.0.2 - [Add a functional Warehouse Page](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/601a5349aaa37716c00070904d86f0252972418f)
 
 **branch :** _storex_
 

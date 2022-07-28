@@ -1,14 +1,12 @@
-<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier.Id: </strong>@SelectedSupplier.Id</MudText>
-<MudText Typo="Typo.subtitle2"><strong>SelectedSupplier: </strong>@SelectedSupplier.Name</MudText>
-<MudText Typo="Typo.subtitle2"><strong>ViewAll: </strong>@ViewAll</MudText>
+
 
 <MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
 
-    @if(ViewAll && SelectedSupplier.Id != Guid.Empty)
+    @if(SelectedSupplier.Id != Guid.Empty)
     {
         <MudCardHeader>
             <CardHeaderAvatar>
-                 @if (string.IsNullOrEmpty(SelectedSupplier.Id.ToString()))
+                 @if (string.IsNullOrEmpty(SelectedSupplier.ImagePath))
                 {
                     <MudAvatar Size="Size.Large" Color="Color.Primary" Class="ma-2">@SelectedSupplier.Name?.ToUpper().FirstOrDefault()</MudAvatar>
                 }
@@ -23,11 +21,35 @@
             </CardHeaderContent>
             <CardHeaderActions>
                 <MudSpacer />
-                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default" Dense="true" OffsetX="true" Direction="Direction.Bottom">
+                    <MudMenuItem Style="color:orange!important">Edit</MudMenuItem>
+                    <MudMenuItem Style="color:red!important">Delete</MudMenuItem>
+                    <MudMenuItem Style="color:green!important">Create</MudMenuItem>
+                </MudMenu>
             </CardHeaderActions>
         </MudCardHeader>
         <MudCardContent>
-            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
+            <MudText Class="mb-8"Typo="Typo.body2">@SelectedSupplier.Description</MudText>
+            <MudContainer>
+                @if(SelectedSupplier.Phone != string.Empty)
+                {
+                    <MudButton Href="@($"tel:{SelectedSupplier.Phone}")" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Call" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedSupplier.Phone
+                    </MudButton>
+                }
+                @if(SelectedSupplier.Email != string.Empty)
+                {
+                    <MudButton Href="@($"mailto:{SelectedSupplier.Email}")" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Email" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedSupplier.Email
+                    </MudButton>
+                }
+                @if(SelectedSupplier.WebsiteUrl != string.Empty)
+                {
+                    <MudButton Href="SelectedSupplier.WebsiteUrl" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Web" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedSupplier.WebsiteUrl
+                    </MudButton>
+                }
+            </MudContainer>
         </MudCardContent>
     }
     else
@@ -55,5 +77,6 @@
     [Parameter]    public string? Style { get; set; }
     [Parameter]    public bool ViewAll {get; set;}
     [Parameter]    public SupplierDto SelectedSupplier { get; set; } = default!;
+    [Parameter]     public bool Start { get; set; } = default!;
 
 }

@@ -27,7 +27,7 @@ public class SupplierAutocomplete : MudAutocomplete<Guid>
         ResetValueOnEmptyText = true;
         SearchFunc = SearchSuppliers;
         ToStringFunc = GetSupplierName;
-        Clearable = true;
+        Clearable = false;
         return base.SetParametersAsync(parameters);
     }
 
