@@ -24,14 +24,14 @@
 
         @if (_canViewOrders)
         {
-            <MudNavLink Href="/store/warehouse" Icon="@Icons.Filled.SecurityUpdateGood" Class="fsh-nav-child">
-                @L["Warehouse"]
+            <MudNavLink Href="/store/suppliers" Icon="@Icons.Filled.SecurityUpdateGood" Class="fsh-nav-child">
+                @L["Suppliers"]
             </MudNavLink>
         }
-        @if (_canViewProducts)
+        @if (_canViewStoreProducts)
         {
-            <MudNavLink Href="/store/stock" Icon="@Icons.Filled.ShoppingBag" Class="fsh-nav-child">
-                @L["Stock"]
+            <MudNavLink Href="/store/warehouse" Icon="@Icons.Filled.ShoppingBag" Class="fsh-nav-child">
+                @L["Warehouse"]
             </MudNavLink>
         }
     }

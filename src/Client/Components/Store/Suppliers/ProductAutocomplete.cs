@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace FSH.BlazorWebAssembly.Client.Components.Store.Orders;
+namespace FSH.BlazorWebAssembly.Client.Components.Store.Suppliers;
 
 public class ProductAutocomplete : MudAutocomplete<Guid>
 {

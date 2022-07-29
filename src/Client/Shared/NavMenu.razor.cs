@@ -27,6 +27,7 @@ public partial class NavMenu
     // StoreX NavMenu Cascading Filters
     private bool _canViewSuppliers;
     private bool _canViewOrders;
+    private bool _canViewStoreProducts;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -43,5 +44,6 @@ public partial class NavMenu
         // StoreX Permissions
         _canViewSuppliers = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Suppliers);
         _canViewOrders = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Orders);
+        _canViewStoreProducts = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.StoreProducts);
     }
 }

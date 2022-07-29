@@ -1,6 +1,16 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.4 - [Complete Warehouse Page]()
+## v0.0.5 - [Complete Stock Page]()
+
+**branch :** _storex_
+
+> This version is compatible with [StoreX-WebAPI v0.0.6](https://github.com/rafitajaen/StoreX-WebAPI/tree/5d7e5e920b1ec5a1cf18aac20bbd5ecfb5a33878)
+
+    Edit:
+        - Project folder re-organization to meet CLEAN architecture standards
+        - Warehouse and Suppliers Pages and Components Updated
+
+## v0.0.4 - [Complete Suppliers Page](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/878bf9b021fc8d85aa5fe2f0be35d1d6564321a3)
 
 **branch :** _storex_
 

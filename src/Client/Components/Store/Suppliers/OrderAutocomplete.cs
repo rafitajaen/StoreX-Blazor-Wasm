@@ -4,29 +4,29 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Localization;
 using MudBlazor;
 
-namespace FSH.BlazorWebAssembly.Client.Components.Store.Orders;
+namespace FSH.BlazorWebAssembly.Client.Components.Store.Suppliers;
 
-public class SupplierAutocomplete : MudAutocomplete<Guid>
+public class OrderAutocomplete : MudAutocomplete<Guid>
 {
     [Inject]
-    private IStringLocalizer<SupplierAutocomplete> L { get; set; } = default!;
+    private IStringLocalizer<OrderAutocomplete> L { get; set; } = default!;
     [Inject]
-    private ISuppliersClient SuppliersClient { get; set; } = default!;
+    private IOrdersClient OrdersClient { get; set; } = default!;
     [Inject]
     private ISnackbar Snackbar { get; set; } = default!;
 
-    private List<SupplierDto> _suppliers = new();
+    private List<OrderDto> _orders = new();
 
     // supply default parameters, but leave the possibility to override them
     public override Task SetParametersAsync(ParameterView parameters)
     {
-        Label = L["Supplier"];
+        Label = L["Order"];
         Variant = Variant.Filled;
         Dense = true;
         Margin = Margin.Dense;
         ResetValueOnEmptyText = true;
-        SearchFunc = SearchSuppliers;
-        ToStringFunc = GetSupplierName;
+        SearchFunc = SearchOrder;
+        ToStringFunc = GetOrderName;
         Clearable = true;
         return base.SetParametersAsync(parameters);
     }
@@ -38,32 +38,32 @@ public class SupplierAutocomplete : MudAutocomplete<Guid>
         if (firstRender &&
             _value != default &&
             await ApiHelper.ExecuteCallGuardedAsync(
-                () => SuppliersClient.GetAsync(_value), Snackbar) is { } supplier)
+                () => OrdersClient.GetAsync(_value), Snackbar) is { } order)
         {
-            _suppliers.Add(supplier);
+            _orders.Add(order);
             ForceRender(true);
         }
     }
 
-    private async Task<IEnumerable<Guid>> SearchSuppliers(string value)
+    private async Task<IEnumerable<Guid>> SearchOrder(string value)
     {
-        var filter = new SearchSuppliersRequest
+        var filter = new SearchOrdersRequest
         {
             PageSize = 10,
             AdvancedSearch = new() { Fields = new[] { "name" }, Keyword = value }
         };
 
         if (await ApiHelper.ExecuteCallGuardedAsync(
-                () => SuppliersClient.SearchAsync(filter), Snackbar)
-            is PaginationResponseOfSupplierDto response)
+                () => OrdersClient.SearchAsync(filter), Snackbar)
+            is PaginationResponseOfOrderDto response)
         {
-            _suppliers = response.Data.ToList();
+            _orders = response.Data.ToList();
         }
 
-        return _suppliers.Select(x => x.Id);
+        return _orders.Select(x => x.Id);
     }
 
-    private string GetSupplierName(Guid id) =>
-        _suppliers.Find(b => b.Id == id)?.Name ?? string.Empty;
+    private string GetOrderName(Guid id) =>
+        _orders.Find(b => b.Id == id)?.Name ?? string.Empty;
 
 }
