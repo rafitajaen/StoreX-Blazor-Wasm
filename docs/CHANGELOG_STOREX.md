@@ -1,6 +1,15 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.3 - [Solve rendering side effects in Warehouse Page]()
+## v0.0.4 - [Complete Warehouse Page]()
+
+**branch :** _storex_
+
+> This version is compatible with [StoreX-WebAPI v0.0.5](https://github.com/rafitajaen/StoreX-WebAPI/tree/1566be581cc9537c3cc2520a100a1dd59a6be320)
+
+    Edit:
+        - Warehouse Page and Components
+
+## v0.0.3 - [Solve rendering side effects in Warehouse Page](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/80c75ff804b5149ed846a0a9feff6e0e3a1f5b8c)
 
 **branch :** _storex_
 

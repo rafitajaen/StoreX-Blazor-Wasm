@@ -2,16 +2,19 @@
 @inject IOrdersClient OrdersClient
 
 
-
-<EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
+<EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context"
+    SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
 
     <EditFormContent>
-        @if (!Context.AddEditModal.IsCreate)
-        {
-            <MudItem xs="12" md="6">
-                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Brand Id"]" />
-            </MudItem>
-        }
+        <MudItem xs="12" md="6">
+            <MudCheckBox @bind-Checked="@context.IsCompleted" Label="@L["Completed"]"/>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudCheckBox @bind-Checked="@context.IsSyncWithStock" Disabled="true" Label="@L["Synced With Stock"]"/>
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <SupplierAutocomplete @bind-Value="@context.SupplierId" Label="@L["Supplier"]"/>
+        </MudItem>
         <MudItem xs="12" md="6">
             <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
         </MudItem>
@@ -21,18 +24,21 @@
         </MudItem>
     </EditFormContent>
 
+    <ExtraActions>
+        <MudMenuItem >@L["Sync With Stock"]</MudMenuItem>
+    </ExtraActions>
+
 </EntityTable>
 
 @code
 {
-    [Parameter] public SupplierDto SelectedSupplier {get; set; } = default!;
+    [Parameter] public SupplierDto SelectedSupplier { get; set; } = default!;
     [Parameter] public OrderDto SelectedItem { get; set; } = default!;
     [Parameter] public EventCallback<OrderDto> SelectedItemChanged { get; set; }
-
+    [Parameter] public bool ViewAll { get; set; }
 
     protected EntityServerTableContext<OrderDto, Guid, UpdateOrderRequest> Context { get; set; } = default!;
     private EntityTable<OrderDto, Guid, UpdateOrderRequest> _table = default!;
-
 
     protected override void OnInitialized() =>
         Context = new(
@@ -41,10 +47,11 @@
             entityResource: FSHResource.Orders,
             fields: new()
             {
-                new(order => order.Id, L["Id"], "Id"),
-                new(order => order.Name, L["Name"], "Name"),
+                new(order => order.IsCompleted, L["Completed"], "Completed", typeof(bool)),
                 new(order => order.SupplierName, L["Supplier"], "Supplier.Name"),
+                new(order => order.Name, L["Name"], "Name"),
                 new(order => order.Description, L["Description"], "Description"),
+                new(order => order.IsSyncWithStock, L["Synced"], "Synced", typeof(bool)),
             },
             idFunc: order => order.Id,
             searchFunc: async filter =>

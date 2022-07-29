@@ -1,10 +1,12 @@
-
+@inject IStringLocalizer<SupplierCard> L
+@inject ISuppliersClient SuppliersClient
 
 <MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
 
     @if(SelectedSupplier.Id != Guid.Empty)
     {
         <MudCardHeader>
+
             <CardHeaderAvatar>
                  @if (string.IsNullOrEmpty(SelectedSupplier.ImagePath))
                 {
@@ -15,37 +17,41 @@
                     <MudAvatar Size="Size.Large" Image="@SelectedSupplier.ImagePath" />
                 }
             </CardHeaderAvatar>
+
             <CardHeaderContent>
                 <MudText Typo="Typo.body1">@SelectedSupplier.Name</MudText>
                 <MudText Typo="Typo.caption">@SelectedSupplier.Email</MudText>
             </CardHeaderContent>
+
             <CardHeaderActions>
                 <MudSpacer />
                 <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default" Dense="true" OffsetX="true" Direction="Direction.Bottom">
-                    <MudMenuItem Style="color:orange!important">Edit</MudMenuItem>
-                    <MudMenuItem Style="color:red!important">Delete</MudMenuItem>
-                    <MudMenuItem Style="color:green!important">Create</MudMenuItem>
+                    <MudMenuItem Style="color:orange!important" OnClick="@(()=> _seb.OnEdit())">Edit</MudMenuItem>
+                    <MudMenuItem Style="color:red!important" OnClick="@(()=> _seb.OnDelete())">Delete</MudMenuItem>
+                    <MudMenuItem Style="color:green!important" OnClick="@(()=> _seb.OnCreate())">Create</MudMenuItem>
                 </MudMenu>
             </CardHeaderActions>
+
         </MudCardHeader>
+
         <MudCardContent>
             <MudText Class="mb-8"Typo="Typo.body2">@SelectedSupplier.Description</MudText>
             <MudContainer>
-                @if(SelectedSupplier.Phone != string.Empty)
+                @if(!string.IsNullOrEmpty(SelectedSupplier.Phone))
                 {
-                    <MudButton Href="@($"tel:{SelectedSupplier.Phone}")" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Call" Color="Color.Tertiary" Size="Size.Small">
+                    <MudButton Href="@($"tel:{SelectedSupplier.Phone}")" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Call" Color="Color.Tertiary" Size="Size.Small">
                         @SelectedSupplier.Phone
                     </MudButton>
                 }
-                @if(SelectedSupplier.Email != string.Empty)
+                @if(!string.IsNullOrEmpty(SelectedSupplier.Email))
                 {
-                    <MudButton Href="@($"mailto:{SelectedSupplier.Email}")" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Email" Color="Color.Tertiary" Size="Size.Small">
+                    <MudButton Href="@($"mailto:{SelectedSupplier.Email}")" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Email" Color="Color.Tertiary" Size="Size.Small">
                         @SelectedSupplier.Email
                     </MudButton>
                 }
-                @if(SelectedSupplier.WebsiteUrl != string.Empty)
+                @if(!string.IsNullOrEmpty(SelectedSupplier.WebsiteUrl))
                 {
-                    <MudButton Href="SelectedSupplier.WebsiteUrl" Target="_blank" Variant="Variant.Outlined" StartIcon="@Icons.Filled.Web" Color="Color.Tertiary" Size="Size.Small">
+                    <MudButton Href="@SelectedSupplier.WebsiteUrl" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Web" Color="Color.Tertiary" Size="Size.Small">
                         @SelectedSupplier.WebsiteUrl
                     </MudButton>
                 }
@@ -70,13 +76,15 @@
     }
 </MudCard>
 
+<SupplierEditBox @ref="_seb" SelectedSupplier=SelectedSupplier OnCreatedSupplier=OnCreatedSupplier/>
 
 @code
 {
     [Parameter]    public string? Class { get; set; }
     [Parameter]    public string? Style { get; set; }
-    [Parameter]    public bool ViewAll {get; set;}
     [Parameter]    public SupplierDto SelectedSupplier { get; set; } = default!;
-    [Parameter]     public bool Start { get; set; } = default!;
+    [Parameter]    public EventCallback<SupplierDto> OnCreatedSupplier { get; set; }
+
+    private SupplierEditBox _seb { get; set; } = default!;
 
 }

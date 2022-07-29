@@ -320,7 +320,11 @@ public partial class EntityTable<TEntity, TId, TRequest>
     }
 
     // StoreX - Extension of EntityTable
-    [Parameter] public TEntity SelectedItem { get; set; } = default!;
-    [Parameter] public EventCallback<TEntity> SelectedItemChanged { get; set; }
+    [Parameter]
+    public TEntity SelectedItem { get; set; } = default!;
+    [Parameter]
+    public EventCallback<TEntity> SelectedItemChanged { get; set; }
+    [Parameter]
+    public int TotalItems { get; set; }
 
 }

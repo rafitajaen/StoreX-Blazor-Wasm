@@ -1,55 +1,69 @@
 @inject IStringLocalizer<SimpleProductsTable> L
 @inject IOrderProductsClient OrderProductsClient
 
+<MudContainer Class="d-flex align-start gap-1">
 
+    <MudText Typo="Typo.overline"><strong>PRODUCTS</strong></MudText>
+    @if(SelectedOrder.Id != Guid.Empty)
+    {
+        <MudText Typo="Typo.overline"><strong>IN ORDER: @SelectedOrder.Name.ToUpper()</strong></MudText>
+        <MudSpacer />
+    }
 
-<EntityTable @ref="_table" TEntity="OrderProductDetailsDto" TId="Guid" TRequest="UpdateOrderProductRequest" Context="@Context" >
+</MudContainer>
+
+<ProductEntityTable @ref="_table" TEntity="OrderProductDetailsDto" TId="Guid" TRequest="UpdateOrderProductRequest" Context="@Context"
+    CustomDeleteFunc="@(async (orderId, productId) => await OrderProductsClient.DeleteAsync(orderId, productId))"
+    OrderIdFunc="@((op) => op.OrderId)" ProductIdFunc="@((op) => op.Product.Id)">
 
     <EditFormContent>
-        @if (!Context.AddEditModal.IsCreate)
-        {
-            <MudItem xs="12" md="6">
-                <MudTextField Value="context.Id" ReadOnly DisableUnderLine Label="@L[$"Brand Id"]" />
-            </MudItem>
-        }
-        <MudItem xs="12" md="6">
-            <MudTextField T="string" For="@(() => context.Product.Name)" @bind-Value="context.Product.Name" Label="@L["Name"]" />
+        <MudItem xs="12" md="12">
+            <MudText Typo="Typo.body1">You were editing the order :<strong>@SelectedOrder.Name</strong></MudText>
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudTextField For="@(() => context.Product.Description)" @bind-Value="context.Product.Description"
-                Label="@L["Description"]" />
+            <OrderAutocomplete @bind-Value="@context.OrderId" Label="@L["Order"]" Disabled="!Context.AddEditModal.IsCreate"/>
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudTextField For="@(() => context.Quantity)" @bind-Value="context.Quantity"
-                Label="@L["Quantity"]" />
+            <MudTextField T="int" For="@(() => context.Quantity)" @bind-Value="context.Quantity" Label="@L["Quantity"]" />
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <ProductAutocomplete @bind-Value="@context.ProductId" Label="@L["Product"]" Disabled="!Context.AddEditModal.IsCreate"/>
         </MudItem>
     </EditFormContent>
 
-</EntityTable>
+</ProductEntityTable>
+
+<MudContainer Class="d-flex justify-end gap-1">
+
+    <MudSpacer />
+    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
+    <MudText Color="Color.Default" Typo="Typo.body2"> TIP: You would prefer to set the quantity to zero instead of deleting the product.</MudText>
+
+</MudContainer>
 
 @code
 {
     [Parameter] public OrderDto SelectedOrder { get; set; } = default!;
 
-
     protected EntityServerTableContext<OrderProductDetailsDto, Guid, UpdateOrderProductRequest> Context { get; set; } = default!;
-    private EntityTable<OrderProductDetailsDto, Guid, UpdateOrderProductRequest> _table = default!;
-    private OrderProductDetailsDto selectedOrder {get; set;} = default!;
-
+    private ProductEntityTable<OrderProductDetailsDto, Guid, UpdateOrderProductRequest> _table = default!;
+    private MudMessageBox mbox { get; set; } = default!;
 
     protected override void OnInitialized() =>
-        Context = new(
-            entityName: L["OrderProduct"],
-            entityNamePlural: L["OrderProducts"],
+    Context = new(
+            entityName: L["Products"],
+            entityNamePlural: L["Products"],
             entityResource: FSHResource.OrderProducts,
             fields: new()
             {
-                new(op => op.OrderId, L["OrderId"], "OrderId"),
-                new(op => op.Product.Name, L["Name"], "Product.Name"),
-                new(op => op.Product.Description, L["Description"], "Product.Description"),
                 new(op => op.Quantity, L["Quantity"], "Quantity"),
+                new(op => op.Product.UnitType, L["Unit Type"], "Product.UnitType"),
+                new(op => op.Product.Name, L["Name"], "Product.Name"),
+                new(op => op.Product.BasePrice, L["Base Price"], "Product.BasePrice"),
+                new(op => op.Product.Description, L["Description"], "Product.Description"),
             },
             idFunc: op => op.OrderId,
+
             searchFunc: async filter =>
             {
                 var orderProductFilter = filter.Adapt<SearchOrderProductsRequest>();
@@ -62,8 +76,8 @@
 
             },
             createFunc: async op => await OrderProductsClient.CreateAsync(op.Adapt<CreateOrderProductRequest>()),
-            updateFunc: async (id, order) => await OrderProductsClient.UpdateAsync(id, order),
-            deleteFunc: async id => await OrderProductsClient.DeleteAsync(id),
+            updateFunc: async (id, op) => await OrderProductsClient.UpdateAsync(op.OrderId, op.ProductId, op),
+            // deleteFunc: async id => await OrderProductsClient.DeleteAsync(id),
             exportAction: string.Empty);
 
 }

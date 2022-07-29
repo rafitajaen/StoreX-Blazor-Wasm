@@ -41,7 +41,12 @@
         }
 
         <FshTable @ref="_table" Elevation="25" ServerData="@ServerReloadFunc" Items="@_entityList" Filter="LocalSearch"
-            Loading="@Loading" LoadingProgressColor="@Color.Secondary" ChildRowContent="@ChildRowContent" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
+            Loading="@Loading" LoadingProgressColor="@Color.Secondary" ChildRowContent="@ChildRowContent" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged" TotalItems="TotalItems">
+
+            <NoRecordsContent>
+                <MudText Typo="Typo.body1"><strong>@Context.EntityName records are empty.</strong></MudText>
+                <MudText Typo="Typo.caption">TIP: Add a new one.</MudText>
+            </NoRecordsContent>
 
             <ToolBarContent>
                 <div class="justify-center mud-text-align-center">
@@ -49,7 +54,7 @@
                     {
                         <MudButton DisableElevation Variant="Variant.Filled" Color="Color.Primary"
                             OnClick="(() => InvokeModal())" StartIcon="@Icons.Material.Filled.Add"
-                            IconColor="Color.Surface">@L["Create"]</MudButton>
+                            IconColor="Color.Surface">@L["Add"]</MudButton>
                     }
                     @if (_canExport)
                     {

@@ -7,40 +7,89 @@
 @inject ISuppliersClient SuppliersClient
 
 <MudGrid>
-    <MudItem xs="12" sm="12" Class="d-flex flex-column gap-10">
-        <MudText Typo="Typo.body2">@searchSupplierId</MudText>
-        <MudText Typo="Typo.body2">@prueba</MudText>
+    <MudItem xs="@(start ? 12 : 5)" sm="@(start ? 12 : 5)">
+
         <FshTitle Class="align-selft-start" Title="@L["Warehouse"]" Description="@L["Manage Suppliers, Orders and Products."]" />
 
-        @if(start)
-        {
-            <MudContainer Class="d-flex flex-column gap-1 align-self-center align-center justify-center mt-16">
-                <MudButton Class="mt-16" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">Find a Supplier</MudButton>
-                <MudText  Typo="Typo.overline">or</MudText>
-                <MudButton Class="mb-16" Variant="Variant.Text" DisableElevation="true" Color="Color.Primary" OnClick="@OnViewAll">Add a new Supplier</MudButton>
-            </MudContainer>
-        }
     </MudItem>
+
+    @if(start)
+        {
+            <MudItem xs="12" sm="12" Class="d-flex flex-column gap-10">
+
+                <MudContainer Class="d-flex flex-column gap-1 align-self-center align-center justify-center mt-16">
+                    <MudButton Class="mt-16" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
+                        Find a Supplier
+                    </MudButton>
+
+                    <MudText Typo="Typo.overline">or</MudText>
+
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" DisableElevation="true" Color="Color.Secondary" OnClick="@(()=> _seb.OnCreate())">
+                        Add a new Supplier
+                    </MudButton>
+
+                    <MudText Typo="Typo.overline">or</MudText>
+
+                    <MudButton Class="mb-16" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
+                        VIEW ALL
+                    </MudButton>
+                </MudContainer>
+
+            </MudItem>
+        }
 
     @if(start is not true || viewAll)
     {
-        <MudItem xs="12" sm="4" Class="d-flex flex-column gap-2">
-            <MudText Typo="Typo.overline">SUPPLIER</MudText>
-            <SupplierCard SelectedSupplier="@selectedSupplier" ViewAll=@viewAll Style="my-6 mr-8"/>
-            <MudButton Class="align-self-end" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">Find a Supplier</MudButton>
-        </MudItem>
-
         @if(isRefreshed)
         {
-            <MudItem xs="12" sm="8">
-            <MudText Typo="Typo.overline">ORDERS</MudText>
-            <SimpleOrderTable SelectedSupplier="@selectedSupplier" SelectedItem="selectedOrder" SelectedItemChanged="OnSelectedItemChanged"/>
-        </MudItem>
+            <MudItem xs="7" sm="7" Class="d-flex align-center justify-end gap-3">
+
+                <MudSpacer />
+                <MudButton Class="mb-2" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
+                    Find a Supplier
+                </MudButton>
+                @if(!viewAll)
+                {
+                    <MudButton Class="mb-2" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
+                        VIEW ALL
+                    </MudButton>
+                }
+                <MudSpacer />
+
+            </MudItem>
+
+            <MudItem xs="10" sm="3">
+
+                <MudContainer Class="d-flex align-start gap-3">
+                    <MudText Typo="Typo.overline"><strong>SUPPLIER</strong></MudText>
+                </MudContainer>
+
+                <SupplierCard Style="my-6 mr-8" SelectedSupplier="@selectedSupplier" OnCreatedSupplier="OnCreatedSupplier"/>
+
+            </MudItem>
+
+            <MudItem xs="12" sm="9" >
+
+                <MudContainer Class="d-flex align-start gap-2">
+                    <MudText Typo="Typo.overline"><strong>ORDERS</strong></MudText>
+                    @if(selectedSupplier.Id != Guid.Empty)
+                    {
+                        <MudText Typo="Typo.overline"><strong>OF @selectedSupplier.Name.ToUpper()</strong></MudText>
+                    }
+                </MudContainer>
+
+                <SimpleOrderTable SelectedSupplier="@selectedSupplier" SelectedItem="selectedOrder" SelectedItemChanged="OnSelectedItemChanged" ViewAll="viewAll"/>
+
+                <MudContainer Class="d-flex justify-end gap-1">
+                    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
+                    <MudText Color="Color.Default" Typo="Typo.body2"> Click to see details.</MudText>
+                </MudContainer>
+
+            </MudItem>
         }
         @if(isProductsRefreshed)
         {
             <MudItem xs="12" sm="12">
-                <MudText Typo="Typo.overline">PRODUCTS</MudText>
                 <SimpleProductsTable SelectedOrder="@selectedOrder"/>
             </MudItem>
         }
@@ -53,31 +102,48 @@
     </MessageContent>
 </MudMessageBox>
 
+<SupplierEditBox @ref="_seb" SelectedSupplier=@selectedSupplier OnCreatedSupplier=OnCreatedSupplier/>
+
 @code
 {
-    private OrderDto selectedOrder {get; set;} = new OrderDto {Name="MegaDefault Order"};
-    public Guid searchSupplierId { get; set; }
-    private SupplierDto selectedSupplier { get; set; } = new SupplierDto {Name="Default Supplier"};
+    // Page's flow control variables
+    private bool start { get; set; } = true;
     private bool viewAll {get; set;} = false;
     private bool isRefreshed {get; set;} = false;
     private bool isProductsRefreshed { get; set; } = false;
+
+    // Models binded
+    public Guid searchSupplierId { get; set; }
+    private OrderDto selectedOrder { get; set; } = new OrderDto ();
+    private SupplierDto selectedSupplier { get; set; } = new SupplierDto ();
+
+    // MudBox
     private MudMessageBox mbox { get; set; } = default!;
-    private bool start { get; set; } = true;
 
-    private string prueba { get; set; } = "Sin asignar";
+    // SupplierEditBox
+    private SupplierEditBox _seb { get; set; } = default!;
 
+    private async Task OnCreatedSupplier(SupplierDto s)
+    {
+        start=false;
+        isRefreshed=false;
+        selectedSupplier = s;
+        searchSupplierId = s.Id;
+        await Task.Delay(50);
+        isRefreshed=true;
+        StateHasChanged();
+    }
 
     private async Task OnFindASupplier()
     {
+        if(start is false) isRefreshed=false;
+
         bool? result = await mbox.Show();
-        if(result is null) prueba="Null";
-        else prueba=result!.ToString();
 
-
-        if(result is not null) isRefreshed=false;
 
         if(result is not null && result is true)
         {
+
             if(start)
             {
                 if(searchSupplierId != Guid.Empty)
@@ -88,21 +154,24 @@
             }
             else
             {
-                if(searchSupplierId == Guid.Empty)
-                {
-                    viewAll = true;
-                    selectedSupplier = default!;
-                }
-                else
+                if(searchSupplierId != Guid.Empty)
                 {
                     viewAll=false;
                     selectedSupplier = await SuppliersClient.GetAsync(searchSupplierId);
+                }
+                else
+                {
+
+                    viewAll = true;
+                    selectedSupplier = new SupplierDto();
+                    selectedSupplier.Id = Guid.Empty;
+
                 }
             }
             isRefreshed=true;
             StateHasChanged();
         }
-        else if(result is not null && result is not true) OnViewAll();
+        else if(result is not null && result is not true) await OnViewAll();
     }
 
     private async Task OnSelectedItemChanged(OrderDto item)
@@ -113,15 +182,17 @@
         isProductsRefreshed=true;
     }
 
-    private void OnViewAll()
+    private async Task OnViewAll()
     {
+        isRefreshed=false;
+        await Task.Delay(50);
         start=true;
         viewAll=true;
         searchSupplierId = Guid.Empty;
-        selectedSupplier = default!;
+        selectedSupplier = new SupplierDto();
+        selectedSupplier.Id = Guid.Empty;
         start=false;
         isRefreshed=true;
         StateHasChanged();
     }
-
 }

@@ -1,0 +1,99 @@
+@inject IStringLocalizer<SupplierEditBox> L
+@inject ISuppliersClient SuppliersClient
+
+<MudMessageBox @ref="mbox" Class="@Class" Style="@Style" CancelText="Cancel" YesText="Confirm">
+    <MessageContent>
+        <MudGrid>
+
+            @if(isDelete is false)
+            {
+                <MudItem xs="12" md="6">
+                    <MudTextField T="string" For="@(() => contextSupplier.Name)" @bind-Value="contextSupplier.Name" Label="@L["Name"]" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                        <MudTextField T="string" For="@(() => contextSupplier.Email)" @bind-Value="contextSupplier.Email" Label="@L["Email"]" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                        <MudTextField T="string" Lines="3" For="@(() => contextSupplier.Description)" @bind-Value="contextSupplier.Description" Label="@L["Description"]" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                        <MudTextField T="string" For="@(() => contextSupplier.Phone)" @bind-Value="contextSupplier.Phone" Label="@L["Phone"]" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                        <MudTextField T="string" For="@(() => contextSupplier.WebsiteUrl)" @bind-Value="contextSupplier.WebsiteUrl" Label="@L["Website"]" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                        <MudTextField T="string" For="@(() => contextSupplier.ImagePath)" @bind-Value="contextSupplier.ImagePath" Label="@L["Profile Image"]" />
+                </MudItem>
+            }
+            else
+            {
+                <MudItem xs="12" md="12">
+                    <MudText Typo="Typo.body1"><strong>@SelectedSupplier.Name</strong> is going to be deleted. Are you sure?</MudText>
+                </MudItem>
+            }
+            </MudGrid>
+
+    </MessageContent>
+</MudMessageBox>
+
+
+@code
+{
+    [Parameter]    public string? Class { get; set; }
+    [Parameter]    public string? Style { get; set; }
+    [Parameter]    public SupplierDto SelectedSupplier { get; set; } = default!;
+    [Parameter]    public EventCallback<SupplierDto> OnCreatedSupplier { get; set; }
+
+    // MudBox
+    private MudMessageBox mbox { get; set; } = default!;
+    private SupplierDto contextSupplier { get; set; } = default!;
+    private bool isDelete { get; set; } = false;
+
+    public async Task OnCreate()
+    {
+        #pragma warning disable BL0005
+        mbox.Title = "Create a Supplier";
+        #pragma warning restore BL0005
+        contextSupplier = new SupplierDto();
+
+        bool? result = await mbox.Show();
+
+        if(result is not null && result is true)
+        {
+            contextSupplier.Id = await SuppliersClient.CreateAsync(contextSupplier.Adapt<CreateSupplierRequest>());
+            await OnCreatedSupplier.InvokeAsync(contextSupplier);
+        }
+    }
+
+    public async Task OnEdit()
+    {
+        #pragma warning disable BL0005
+        mbox.Title = "Edit a Supplier";
+        #pragma warning restore BL0005
+        contextSupplier = SelectedSupplier;
+
+        bool? result = await mbox.Show();
+
+        if(result is not null && result is true)
+        {
+            await SuppliersClient.UpdateAsync(SelectedSupplier.Id, contextSupplier.Adapt<UpdateSupplierRequest>());
+        }
+    }
+
+    public async Task OnDelete()
+    {
+        #pragma warning disable BL0005
+        mbox.Title = "Delete a Supplier";
+        #pragma warning restore BL0005
+        isDelete = true;
+
+        bool? result = await mbox.Show();
+
+        if(result is not null && result is true)
+        {
+            await SuppliersClient.DeleteAsync(SelectedSupplier.Id);
+            await OnCreatedSupplier.InvokeAsync(contextSupplier);
+        }
+    }
+}
