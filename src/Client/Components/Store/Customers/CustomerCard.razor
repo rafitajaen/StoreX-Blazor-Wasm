@@ -1,0 +1,94 @@
+@inject IStringLocalizer<CustomerCard> L
+@inject ICustomersClient CustomersClient
+
+<MudContainer Class="d-flex align-start gap-3">
+    <MudText Typo="Typo.overline"><strong>CUSTOMER</strong></MudText>
+</MudContainer>
+
+<MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
+
+    @if(SelectedCustomer.Id != Guid.Empty)
+    {
+        <MudCardHeader>
+
+            <CardHeaderAvatar>
+                 @if (string.IsNullOrEmpty(SelectedCustomer.ImagePath))
+                {
+                    <MudAvatar Size="Size.Large" Color="Color.Primary" Class="ma-2">@SelectedCustomer.Name?.ToUpper().FirstOrDefault()</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Size="Size.Large" Image="@SelectedCustomer.ImagePath" />
+                }
+            </CardHeaderAvatar>
+
+            <CardHeaderContent>
+                <MudText Typo="Typo.body1">@SelectedCustomer.Name</MudText>
+                <MudText Typo="Typo.caption">@SelectedCustomer.Email</MudText>
+            </CardHeaderContent>
+
+            <CardHeaderActions>
+                <MudSpacer />
+                <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default" Dense="true" OffsetX="true" Direction="Direction.Bottom">
+                    <MudMenuItem Style="color:orange!important" OnClick="@(()=> _seb.OnEdit())">Edit</MudMenuItem>
+                    <MudMenuItem Style="color:red!important" OnClick="@(()=> _seb.OnDelete())">Delete</MudMenuItem>
+                    <MudMenuItem Style="color:green!important" OnClick="@(()=> _seb.OnCreate())">Create</MudMenuItem>
+                </MudMenu>
+            </CardHeaderActions>
+
+        </MudCardHeader>
+
+        <MudCardContent>
+            <MudText Class="mb-8"Typo="Typo.body2">@SelectedCustomer.Description</MudText>
+            <MudContainer>
+                @if(!string.IsNullOrEmpty(SelectedCustomer.Phone))
+                {
+                    <MudButton Href="@($"tel:{SelectedCustomer.Phone}")" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Call" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedCustomer.Phone
+                    </MudButton>
+                }
+                @if(!string.IsNullOrEmpty(SelectedCustomer.Email))
+                {
+                    <MudButton Href="@($"mailto:{SelectedCustomer.Email}")" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Email" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedCustomer.Email
+                    </MudButton>
+                }
+                @if(!string.IsNullOrEmpty(SelectedCustomer.WebsiteUrl))
+                {
+                    <MudButton Href="@SelectedCustomer.WebsiteUrl" Target="_blank" Variant="Variant.Text" StartIcon="@Icons.Filled.Web" Color="Color.Tertiary" Size="Size.Small">
+                        @SelectedCustomer.WebsiteUrl
+                    </MudButton>
+                }
+            </MudContainer>
+        </MudCardContent>
+    }
+    else
+    {
+        <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.False" Height="40px" Width="40px"/>
+            </CardHeaderAvatar>
+            <CardHeaderContent>
+                <MudSkeleton Animation="Animation.False" Width="40%" />
+                <MudSkeleton Animation="Animation.False" Width="60%" />
+            </CardHeaderContent>
+        </MudCardHeader>
+        <MudCardContent>
+                <MudSkeleton Width="80%" Animation="Animation.False"/>
+                <MudSkeleton Width="60%" Animation="Animation.False"/>
+        </MudCardContent>
+    }
+</MudCard>
+
+<CustomerEditBox @ref="_seb" SelectedCustomer=SelectedCustomer OnCreatedCustomer=OnCreatedCustomer/>
+
+@code
+{
+    [Parameter]    public string? Class { get; set; }
+    [Parameter]    public string? Style { get; set; }
+    [Parameter]    public CustomerDto SelectedCustomer { get; set; } = default!;
+    [Parameter]    public EventCallback<CustomerDto> OnCreatedCustomer { get; set; }
+
+    private CustomerEditBox _seb { get; set; } = default!;
+
+}

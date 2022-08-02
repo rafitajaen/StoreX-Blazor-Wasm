@@ -1,0 +1,199 @@
+@page "/store/customers"
+
+@attribute [MustHavePermission(FSHAction.View, FSHResource.Projects)]
+
+@inject IStringLocalizer<Customers> L
+@inject IProjectsClient ProjectsClient
+@inject ICustomersClient CustomersClient
+
+<MudGrid>
+    <MudItem xs="@(start ? 12 : 5)" sm="@(start ? 12 : 5)">
+
+        <FshTitle Title="@L["Customers"]" Description="@L["Manage Customers, Projects and Deliveries."]" />
+
+    </MudItem>
+
+    @if(start)
+        {
+            <MudItem xs="12" sm="12" Class="d-flex flex-column gap-10">
+
+                <MudContainer Class="d-flex flex-column gap-1 align-self-center align-center justify-center mt-16">
+                    <MudButton Class="mt-16" OnClick="@OnFindACustomer" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
+                        Find a Customer
+                    </MudButton>
+
+                    <MudText Typo="Typo.overline">or</MudText>
+
+                    <MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" DisableElevation="true" Color="Color.Secondary" OnClick="@(()=> _seb.OnCreate())">
+                        Add a new Customer
+                    </MudButton>
+
+                    <MudText Typo="Typo.overline">or</MudText>
+
+                    <MudButton Class="mb-16" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
+                        VIEW ALL
+                    </MudButton>
+                </MudContainer>
+
+            </MudItem>
+        }
+
+    @if(start is false || viewAll)
+    {
+        @if(isRefreshed)
+        {
+            <MudItem xs="7" sm="7" Class="d-flex align-center justify-end gap-3">
+
+                <MudSpacer />
+                <MudButton Class="mb-2" OnClick="@OnFindACustomer" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
+                    Find a Customer
+                </MudButton>
+                @if(!viewAll)
+                {
+                    <MudButton Class="mb-2" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
+                        VIEW ALL
+                    </MudButton>
+                }
+                <MudSpacer />
+
+            </MudItem>
+
+            <MudItem xs="10" sm="3">
+                <CustomerCard Style="my-6 mr-8" SelectedCustomer="@selectedCustomer" OnCreatedCustomer="OnCreatedCustomer"/>
+            </MudItem>
+
+            <MudItem xs="12" sm="9" >
+                <SimpleProjectTable SelectedCustomer="@selectedCustomer" SelectedItem="selectedProject" SelectedItemChanged="OnSelectedProjectChanged" ViewAll="viewAll"/>
+            </MudItem>
+        }
+        @if(isDeliveriesRefreshed)
+        {
+            <MudItem xs="12" sm="12">
+                <SimpleDeliveryTable SelectedProject="@selectedProject" SelectedItem="@selectedDelivery" SelectedItemChanged="OnSelectedDeliveryChanged" ViewAll="viewAll"/>
+            </MudItem>
+        }
+        @if(isProductsRefreshed)
+        {
+            <MudItem xs="12" sm="12">
+                <SimpleDeliveryProductsTable SelectedDelivery="@selectedDelivery" />
+            </MudItem>
+        }
+    }
+</MudGrid>
+
+<MudMessageBox @ref="mbox" Title="Find a Customer" NoText="View All" YesText="Select Customer">
+    <MessageContent>
+        <CustomerAutocomplete @bind-Value="@searchCustomerId"/>
+    </MessageContent>
+</MudMessageBox>
+
+<CustomerEditBox @ref="_seb" SelectedCustomer=@selectedCustomer OnCreatedCustomer=OnCreatedCustomer/>
+
+@code
+{
+    // Page's flow control variables
+    private bool start { get; set; } = true;
+    private bool viewAll {get; set;} = false;
+    private bool isRefreshed {get; set;} = false;
+    private bool isDeliveriesRefreshed { get; set; } = false;
+    private bool isProductsRefreshed { get; set; } = false;
+
+
+    // Models binded
+    public Guid searchCustomerId { get; set; }
+    private CustomerDto selectedCustomer { get; set; } = new CustomerDto();
+    private ProjectDto selectedProject { get; set; } = new ProjectDto();
+    private DeliveryDto selectedDelivery { get; set; } = new DeliveryDto();
+
+    // MudBox
+    private MudMessageBox mbox { get; set; } = default!;
+
+    // CustomerEditBox
+    private CustomerEditBox _seb { get; set; } = default!;
+
+    private async Task OnCreatedCustomer(CustomerDto s)
+    {
+        start=false;
+        isRefreshed=false;
+        selectedCustomer = s;
+        searchCustomerId = s.Id;
+        await Task.Delay(50);
+        isRefreshed=true;
+        StateHasChanged();
+    }
+
+    private async Task OnFindACustomer()
+    {
+        if(start is false) isRefreshed=false;
+
+        bool? result = await mbox.Show();
+
+
+        if(result is not null && result is true)
+        {
+
+            if(start)
+            {
+                if(searchCustomerId != Guid.Empty)
+                {
+                    start = false;
+                    selectedCustomer = await CustomersClient.GetAsync(searchCustomerId);
+                }
+            }
+            else
+            {
+                if(searchCustomerId != Guid.Empty)
+                {
+                    viewAll=false;
+                    isDeliveriesRefreshed=false;
+                    isProductsRefreshed=false;
+                    selectedCustomer = await CustomersClient.GetAsync(searchCustomerId);
+                }
+                else
+                {
+
+                    viewAll = true;
+                    selectedCustomer = new CustomerDto();
+                    selectedCustomer.Id = Guid.Empty;
+
+                }
+            }
+            isRefreshed=true;
+            StateHasChanged();
+        }
+        else if(result is not null && result is not true) await OnViewAll();
+    }
+
+    private async Task OnSelectedProjectChanged(ProjectDto item)
+    {
+	    isDeliveriesRefreshed = false;
+        isProductsRefreshed = false;
+        selectedProject = item ;
+        await Task.Delay(50);
+        isDeliveriesRefreshed = true;
+    }
+
+    private async Task OnSelectedDeliveryChanged(DeliveryDto item)
+    {
+	    isProductsRefreshed = false;
+        selectedDelivery = item ;
+        await Task.Delay(50);
+        isProductsRefreshed = true;
+    }
+
+    private async Task OnViewAll()
+    {
+        isRefreshed=false;
+        isDeliveriesRefreshed=false;
+        isProductsRefreshed=false;
+        await Task.Delay(50);
+        start=true;
+        viewAll=true;
+        searchCustomerId = Guid.Empty;
+        selectedCustomer = new CustomerDto();
+        selectedCustomer.Id = Guid.Empty;
+        start=false;
+        isRefreshed=true;
+        StateHasChanged();
+    }
+}

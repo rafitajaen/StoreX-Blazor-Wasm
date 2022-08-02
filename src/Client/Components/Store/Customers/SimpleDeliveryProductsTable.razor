@@ -1,0 +1,79 @@
+@inject IStringLocalizer<SimpleProductsTable> L
+@inject IDeliveryProductsClient DeliveryProductsClient
+
+<MudContainer Class="d-flex align-start gap-2">
+
+    <MudText Typo="Typo.overline"><strong>PRODUCTS</strong></MudText>
+    @if(SelectedDelivery.Id != Guid.Empty)
+    {
+        <MudText Typo="Typo.overline"> (All products in @SelectedDelivery.Name)</MudText>
+    }
+
+</MudContainer>
+
+<ProductEntityTable @ref="_table" TEntity="DeliveryProductDetailsDto" TId="Guid" TRequest="UpdateDeliveryProductRequest" Context="@Context"
+    CustomDeleteFunc="@(async (deliveryId, productId) => await DeliveryProductsClient.DeleteAsync(deliveryId, productId))"
+    OrderIdFunc="@((dp) => dp.DeliveryId)" ProductIdFunc="@((dp) => dp.Product.Id)">
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <DeliveryAutocomplete @bind-Value="@context.DeliveryId" Label="@L["Delivery"]" Disabled="!Context.AddEditModal.IsCreate" HelperText="@($"INFO: You were in {@SelectedDelivery.Name}")"/>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="int" For="@(() => context.Quantity)" @bind-Value="context.Quantity" Label="@L["Quantity"]" />
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <ProductAutocomplete @bind-Value="@context.ProductId" Label="@L["Product"]" Disabled="!Context.AddEditModal.IsCreate"/>
+        </MudItem>
+    </EditFormContent>
+
+</ProductEntityTable>
+
+<MudContainer Class="d-flex justify-end gap-1">
+
+    <MudSpacer />
+    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
+    <MudText Color="Color.Default" Typo="Typo.body2"> TIP: You would prefer to set the quantity to zero instead of deleting the product.</MudText>
+
+</MudContainer>
+
+@code
+{
+    [Parameter] public DeliveryDto SelectedDelivery { get; set; } = default!;
+
+    protected EntityServerTableContext<DeliveryProductDetailsDto, Guid, UpdateDeliveryProductRequest> Context { get; set; } = default!;
+    private ProductEntityTable<DeliveryProductDetailsDto, Guid, UpdateDeliveryProductRequest> _table = default!;
+    private MudMessageBox mbox { get; set; } = default!;
+
+    protected override void OnInitialized() =>
+    Context = new(
+            entityName: L["Products"],
+            entityNamePlural: L["Products"],
+            entityResource: FSHResource.DeliveryProducts,
+            fields: new()
+            {
+                new(dp => dp.Quantity, L["Quantity"], "Quantity"),
+                new(dp => dp.Product.UnitType, L["Unit Type"], "Product.UnitType"),
+                new(dp => dp.Product.Name, L["Name"], "Product.Name"),
+                new(dp => dp.Product.BasePrice, L["Base Price"], "Product.BasePrice"),
+                new(dp => dp.Product.Description, L["Description"], "Product.Description"),
+            },
+            idFunc: dp => dp.DeliveryId,
+
+            searchFunc: async filter =>
+            {
+                var deliveryProductFilter = filter.Adapt<SearchDeliveryProductsRequest>();
+
+                if (SelectedDelivery.Id != Guid.Empty) deliveryProductFilter.DeliveryId = SelectedDelivery.Id;
+                else deliveryProductFilter.DeliveryId = null;
+
+                var result = await DeliveryProductsClient.SearchAsync(deliveryProductFilter);
+                return result.Adapt<PaginationResponse<DeliveryProductDetailsDto>>();
+
+            },
+            createFunc: async dp => await DeliveryProductsClient.CreateAsync(dp.Adapt<CreateDeliveryProductRequest>()),
+            updateFunc: async (id, dp) => await DeliveryProductsClient.UpdateAsync(dp.DeliveryId, dp.ProductId, dp),
+            // deleteFunc: async id => await DeliveryProductsClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+}

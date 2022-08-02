@@ -34,6 +34,12 @@
                 @L["Warehouse"]
             </MudNavLink>
         }
+        @if (_canViewProjects)
+        {
+            <MudNavLink Href="/store/customers" Icon="@Icons.Filled.DesktopMac" Class="fsh-nav-child">
+                @L["Customers"]
+            </MudNavLink>
+        }
     }
     @if (_canViewProducts || _canViewBrands)
     {

@@ -28,6 +28,7 @@ public partial class NavMenu
     private bool _canViewSuppliers;
     private bool _canViewOrders;
     private bool _canViewStoreProducts;
+    private bool _canViewProjects;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -45,5 +46,6 @@ public partial class NavMenu
         _canViewSuppliers = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Suppliers);
         _canViewOrders = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Orders);
         _canViewStoreProducts = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.StoreProducts);
+        _canViewProjects = await AuthService.HasPermissionAsync(user, FSHAction.View, FSHResource.Projects);
     }
 }

@@ -1,6 +1,20 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.5 - [Complete Stock Page]()
+## v0.0.6 - [Complete Customers Page]()
+
+**branch :** _storex_
+
+> This version is compatible with [StoreX-WebAPI v0.0.9](https://github.com/rafitajaen/StoreX-WebAPI/tree/decce606983c5dda81b725afb93097a36171f29d)
+
+    Add:
+        - src/Client/Pages:  Customers Page
+
+    Edit:
+        - src/Client/Shared: Update NavMenu with new Customers Page
+        - src/Shared/Authorization/FSHPermission: Update Permissions with new Models
+        - src/Client.Infrastructure/ApiClient: Update API with new Models
+
+## v0.0.5 - [Complete Stock Page](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/86ba1becf7fcda29ab58ca4f50234eff78055403)
 
 **branch :** _storex_
 

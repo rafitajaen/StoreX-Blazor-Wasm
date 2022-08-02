@@ -1,0 +1,70 @@
+@inject IStringLocalizer<SimpleQuotationTable> L
+@inject IQuotationsClient QuotationsClient
+
+
+<EntityTable @ref="_table" TEntity="QuotationDto" TId="Guid" TRequest="UpdateQuotationRequest" Context="@Context"
+    SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudCheckBox @bind-Checked="@context.IsCompleted" Label="@L["Completed"]"/>
+        </MudItem>
+
+        <MudItem xs="12" md="12">
+            <ProjectAutocomplete @bind-Value="@context.ProjectId" Label="@L["Project"]"/>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
+                Label="@L["Description"]" />
+        </MudItem>
+    </EditFormContent>
+
+    <ExtraActions>
+        <MudMenuItem >@L["Sync With Stock"]</MudMenuItem>
+    </ExtraActions>
+
+</EntityTable>
+
+@code
+{
+    [Parameter] public ProjectDto SelectedProject { get; set; } = default!;
+    [Parameter] public QuotationDto SelectedItem { get; set; } = default!;
+    [Parameter] public EventCallback<QuotationDto> SelectedItemChanged { get; set; }
+    [Parameter] public bool ViewAll { get; set; }
+
+    protected EntityServerTableContext<QuotationDto, Guid, UpdateQuotationRequest> Context { get; set; } = default!;
+    private EntityTable<QuotationDto, Guid, UpdateQuotationRequest> _table = default!;
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Quotation"],
+            entityNamePlural: L["Quotations"],
+            entityResource: FSHResource.Quotations,
+            fields: new()
+            {
+                new(quotation => quotation.IsAccepted, L["Accepted"], "IsAccepted", typeof(bool)),
+                new(quotation => quotation.ProjectName, L["Project"], "Project.Name"),
+                new(quotation => quotation.Name, L["Name"], "Name"),
+                new(quotation => quotation.Description, L["Description"], "Description"),
+            },
+            idFunc: quotation => quotation.Id,
+            searchFunc: async filter =>
+            {
+                var quotationFilter = filter.Adapt<SearchQuotationsRequest>();
+
+                if(SelectedProject.Id != Guid.Empty) quotationFilter.ProjectId = SelectedProject.Id;
+                else quotationFilter.ProjectId = null;
+
+                var result = await QuotationsClient.SearchAsync(quotationFilter);
+
+                return result.Adapt<PaginationResponse<QuotationDto>>();
+            },
+            createFunc: async quotation => await QuotationsClient.CreateAsync(quotation.Adapt<CreateQuotationRequest>()),
+            updateFunc: async (id, quotation) => await QuotationsClient.UpdateAsync(id, quotation),
+            deleteFunc: async id => await QuotationsClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+}

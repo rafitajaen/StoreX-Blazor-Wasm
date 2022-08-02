@@ -32,6 +32,14 @@ public static class FSHResource
     public const string Orders = nameof(Orders);
     public const string StoreProducts = nameof(StoreProducts);
     public const string OrderProducts = nameof(OrderProducts);
+    public const string Customers = nameof(Customers);
+    public const string Projects = nameof(Projects);
+    public const string Quotations = nameof(Quotations);
+    public const string QuotationProducts = nameof(QuotationProducts);
+    public const string Deliveries = nameof(Deliveries);
+    public const string DeliveryProducts = nameof(DeliveryProducts);
+    public const string Invoices = nameof(Invoices);
+    public const string InvoiceProducts = nameof(InvoiceProducts);
 }
 
 public static class FSHPermissions
@@ -101,6 +109,62 @@ public static class FSHPermissions
         new("Update Order Products", FSHAction.Update, FSHResource.OrderProducts),
         new("Delete Order Products", FSHAction.Delete, FSHResource.OrderProducts),
         new("Export Order Products", FSHAction.Export, FSHResource.OrderProducts),
+
+        new("View   Customers", FSHAction.View,   FSHResource.Customers, IsBasic: true),
+        new("Search Customers", FSHAction.Search, FSHResource.Customers, IsBasic: true),
+        new("Create Customers", FSHAction.Create, FSHResource.Customers),
+        new("Update Customers", FSHAction.Update, FSHResource.Customers),
+        new("Delete Customers", FSHAction.Delete, FSHResource.Customers),
+        new("Export Customers", FSHAction.Export, FSHResource.Customers),
+
+        new("View   Projects", FSHAction.View,   FSHResource.Projects, IsBasic: true),
+        new("Search Projects", FSHAction.Search, FSHResource.Projects, IsBasic: true),
+        new("Create Projects", FSHAction.Create, FSHResource.Projects),
+        new("Update Projects", FSHAction.Update, FSHResource.Projects),
+        new("Delete Projects", FSHAction.Delete, FSHResource.Projects),
+        new("Export Projects", FSHAction.Export, FSHResource.Projects),
+
+        new("View   Quotations", FSHAction.View,   FSHResource.Quotations, IsBasic: true),
+        new("Search Quotations", FSHAction.Search, FSHResource.Quotations, IsBasic: true),
+        new("Create Quotations", FSHAction.Create, FSHResource.Quotations),
+        new("Update Quotations", FSHAction.Update, FSHResource.Quotations),
+        new("Delete Quotations", FSHAction.Delete, FSHResource.Quotations),
+        new("Export Quotations", FSHAction.Export, FSHResource.Quotations),
+
+        new("View   QuotationProducts", FSHAction.View,   FSHResource.QuotationProducts, IsBasic: true),
+        new("Search QuotationProducts", FSHAction.Search, FSHResource.QuotationProducts, IsBasic: true),
+        new("Create QuotationProducts", FSHAction.Create, FSHResource.QuotationProducts),
+        new("Update QuotationProducts", FSHAction.Update, FSHResource.QuotationProducts),
+        new("Delete QuotationProducts", FSHAction.Delete, FSHResource.QuotationProducts),
+        new("Export QuotationProducts", FSHAction.Export, FSHResource.QuotationProducts),
+
+        new("View   Deliveries", FSHAction.View,   FSHResource.Deliveries, IsBasic: true),
+        new("Search Deliveries", FSHAction.Search, FSHResource.Deliveries, IsBasic: true),
+        new("Create Deliveries", FSHAction.Create, FSHResource.Deliveries),
+        new("Update Deliveries", FSHAction.Update, FSHResource.Deliveries),
+        new("Delete Deliveries", FSHAction.Delete, FSHResource.Deliveries),
+        new("Export Deliveries", FSHAction.Export, FSHResource.Deliveries),
+
+        new("View   DeliveryProducts", FSHAction.View,   FSHResource.DeliveryProducts, IsBasic: true),
+        new("Search DeliveryProducts", FSHAction.Search, FSHResource.DeliveryProducts, IsBasic: true),
+        new("Create DeliveryProducts", FSHAction.Create, FSHResource.DeliveryProducts),
+        new("Update DeliveryProducts", FSHAction.Update, FSHResource.DeliveryProducts),
+        new("Delete DeliveryProducts", FSHAction.Delete, FSHResource.DeliveryProducts),
+        new("Export DeliveryProducts", FSHAction.Export, FSHResource.DeliveryProducts),
+
+        new("View   Invoices", FSHAction.View,   FSHResource.Invoices, IsBasic: true),
+        new("Search Invoices", FSHAction.Search, FSHResource.Invoices, IsBasic: true),
+        new("Create Invoices", FSHAction.Create, FSHResource.Invoices),
+        new("Update Invoices", FSHAction.Update, FSHResource.Invoices),
+        new("Delete Invoices", FSHAction.Delete, FSHResource.Invoices),
+        new("Export Invoices", FSHAction.Export, FSHResource.Invoices),
+
+        new("View   InvoiceProducts", FSHAction.View,   FSHResource.InvoiceProducts, IsBasic: true),
+        new("Search InvoiceProducts", FSHAction.Search, FSHResource.InvoiceProducts, IsBasic: true),
+        new("Create InvoiceProducts", FSHAction.Create, FSHResource.InvoiceProducts),
+        new("Update InvoiceProducts", FSHAction.Update, FSHResource.InvoiceProducts),
+        new("Delete InvoiceProducts", FSHAction.Delete, FSHResource.InvoiceProducts),
+        new("Export InvoiceProducts", FSHAction.Export, FSHResource.InvoiceProducts),
 
     };
 

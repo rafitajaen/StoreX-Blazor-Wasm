@@ -1,0 +1,80 @@
+@inject IStringLocalizer<SimpleProjectTable> L
+@inject IProjectsClient ProjectsClient
+
+<MudContainer Class="d-flex align-start gap-2">
+    <MudText Typo="Typo.overline"><strong>PROJECTS</strong></MudText>
+    @if(SelectedCustomer.Id != Guid.Empty)
+    {
+        <MudText Typo="Typo.overline"><strong>OF @SelectedCustomer.Name.ToUpper()</strong></MudText>
+    }
+    else
+    {
+        <MudText Typo="Typo.overline"> (All projects)</MudText>
+    }
+</MudContainer>
+
+<EntityTable @ref="_table" TEntity="ProjectDto" TId="Guid" TRequest="UpdateProjectRequest" Context="@Context"
+    SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
+
+    <EditFormContent>
+        <MudItem xs="12" md="6">
+            <MudCheckBox @bind-Checked="@context.IsCompleted" Label="@L["Is this project completed?"]"/>
+        </MudItem>
+        <MudItem xs="12" md="12">
+            <CustomerAutocomplete @bind-Value="@context.CustomerId" Label="@L["Select a Customer"]"/>
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Project Name"]" />
+        </MudItem>
+        <MudItem xs="12" md="6">
+            <MudTextField For="@(() => context.Description)" @bind-Value="context.Description" Label="@L["Project Description"]" />
+        </MudItem>
+    </EditFormContent>
+
+</EntityTable>
+
+<MudContainer Class="d-flex justify-end gap-1">
+    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
+    <MudText Color="Color.Default" Typo="Typo.body2"> Click to see deliveries.</MudText>
+</MudContainer>
+
+@code
+{
+    [Parameter] public CustomerDto SelectedCustomer { get; set; } = default!;
+    [Parameter] public ProjectDto SelectedItem { get; set; } = default!;
+    [Parameter] public EventCallback<ProjectDto> SelectedItemChanged { get; set; }
+    [Parameter] public bool ViewAll { get; set; }
+
+    protected EntityServerTableContext<ProjectDto, Guid, UpdateProjectRequest> Context { get; set; } = default!;
+    private EntityTable<ProjectDto, Guid, UpdateProjectRequest> _table = default!;
+
+    protected override void OnInitialized() =>
+        Context = new(
+            entityName: L["Project"],
+            entityNamePlural: L["Projects"],
+            entityResource: FSHResource.Projects,
+            fields: new()
+            {
+                new(project => project.IsCompleted, L["Completed"], "IsCompleted", typeof(bool)),
+                new(project => project.CustomerName, L["Customer"], "Customer.Name"),
+                new(project => project.Name, L["Name"], "Name"),
+                new(project => project.Description, L["Description"], "Description"),
+            },
+            idFunc: project => project.Id,
+            searchFunc: async filter =>
+            {
+                var projectFilter = filter.Adapt<SearchProjectsRequest>();
+
+                if(SelectedCustomer.Id != Guid.Empty) projectFilter.CustomerId = SelectedCustomer.Id;
+                else projectFilter.CustomerId = null;
+
+                var result = await ProjectsClient.SearchAsync(projectFilter);
+
+                return result.Adapt<PaginationResponse<ProjectDto>>();
+            },
+            createFunc: async project => await ProjectsClient.CreateAsync(project.Adapt<CreateProjectRequest>()),
+            updateFunc: async (id, project) => await ProjectsClient.UpdateAsync(id, project),
+            deleteFunc: async id => await ProjectsClient.DeleteAsync(id),
+            exportAction: string.Empty);
+
+}
