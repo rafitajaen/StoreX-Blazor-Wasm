@@ -14,33 +14,39 @@
     <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Personal"]</MudText>
     @if (_canViewDashboard)
     {
-        <MudNavLink Href="/dashboard" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">@L["Dashboard"]</MudNavLink>
+        <MudNavLink Href="/my-dashboard" Match="NavLinkMatch.All" Icon="@Icons.Filled.Dashboard">@L["Dashboard"]</MudNavLink>
     }
     <MudNavLink Href="/account" Icon="@Icons.Filled.ManageAccounts">@L["Account"]</MudNavLink>
     <MudNavLink Href="/audit-logs" Icon="@Icons.Material.Filled.SecurityUpdateGood">@L["Logs"]</MudNavLink>
-    @if (_canViewOrders || _canViewSuppliers)
-    {
-        <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Store Management"]</MudText>
 
-        @if (_canViewOrders)
-        {
-            <MudNavLink Href="/store/suppliers" Icon="@Icons.Filled.SecurityUpdateGood" Class="fsh-nav-child">
-                @L["Suppliers"]
-            </MudNavLink>
-        }
-        @if (_canViewStoreProducts)
-        {
-            <MudNavLink Href="/store/warehouse" Icon="@Icons.Filled.ShoppingBag" Class="fsh-nav-child">
-                @L["Warehouse"]
-            </MudNavLink>
-        }
-        @if (_canViewProjects)
-        {
-            <MudNavLink Href="/store/customers" Icon="@Icons.Filled.DesktopMac" Class="fsh-nav-child">
-                @L["Customers"]
-            </MudNavLink>
-        }
+    <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Stock Alerts"]</MudText>
+    @if (_canViewStoreProducts)
+    {
+        <MudNavLink Href="/alerts" Icon="@Icons.Filled.AddAlert" Class="fsh-nav-child">
+            @L["Alerts"]
+        </MudNavLink>
     }
+
+    <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Store Management"]</MudText>
+    @if (_canViewOrders)
+    {
+        <MudNavLink Href="/store/suppliers" Icon="@Icons.Filled.SecurityUpdateGood" Class="fsh-nav-child">
+            @L["Suppliers"]
+        </MudNavLink>
+    }
+    @if (_canViewStoreProducts)
+    {
+        <MudNavLink Href="/store/warehouse" Icon="@Icons.Filled.ShoppingBag" Class="fsh-nav-child">
+            @L["Warehouse"]
+        </MudNavLink>
+    }
+    @if (_canViewProjects)
+    {
+        <MudNavLink Href="/store/customers" Icon="@Icons.Filled.DesktopMac" Class="fsh-nav-child">
+            @L["Customers"]
+        </MudNavLink>
+    }
+
     @if (_canViewProducts || _canViewBrands)
     {
         <MudText Typo="Typo.subtitle2" Color="Color.Primary" Class="ml-4 my-3">@L["Legacy"]</MudText>

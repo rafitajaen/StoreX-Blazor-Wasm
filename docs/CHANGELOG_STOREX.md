@@ -1,6 +1,19 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.6 - [Complete Customers Page]()
+## v0.0.7 - [Complete Dashboard and Alerts]()
+
+**branch :** _storex_
+
+> This version is compatible with [StoreX-WebAPI v0.0.10](https://github.com/rafitajaen/StoreX-WebAPI/tree/688d3349b2823bdb0fd492828102e8af6e449a40)
+
+    Add:
+        - src/Client/Pages:  StoreDashboard and Alerts Pages
+
+    Edit:
+        - src/Client/Shared: Update NavMenu with new Pages
+        - src/Client.Infrastructure/ApiClient: Update APIClient with new Backend Updates
+
+## v0.0.6 - [Complete Customers Page](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/7605b51fb7219dd47da79505c804dafc8e8aac6a)
 
 **branch :** _storex_
 

@@ -1,0 +1,101 @@
+@page "/my-dashboard"
+@attribute [MustHavePermission(FSHAction.View, FSHResource.Dashboard)]
+
+@inject IStringLocalizer<StoreDashboard> L
+
+<FshTitle Title="@L["Dashboard"]" Description="@L["Realtime Updates & Insights with SignalR."]" />
+
+@if (!_loaded)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+}
+else
+{
+    <MudGrid>
+
+        <MudItem xs="12" sm="6" md="4" Class="d-flex flex-column gap-2">
+
+            <MudText Typo="Typo.overline"><strong>WAREHOUSE STATS</strong></MudText>
+
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Filled.SecurityUpdateGood" Color="Color.Primary" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Suppliers"]</MudText>
+                    <MudText @bind-Value="@Stats.SuppliersCount" Typo="Typo.h5">@Stats.SuppliersCount</MudText>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Filled.ListAlt" Color="Color.Secondary" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Orders"]</MudText>
+                    <MudText @bind-Value="@Stats.OrdersCount" Typo="Typo.h5">@Stats.OrdersCount</MudText>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Material.Filled.ViewCarousel" Color="Color.Tertiary" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Products"]</MudText>
+                    <MudText @bind-Value="@Stats.StoreProductsCount" Typo="Typo.h5">@Stats.StoreProductsCount</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" Class="d-flex flex-column gap-2">
+
+            <MudText Typo="Typo.overline"><strong>CUSTOMER STATS</strong></MudText>
+
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Filled.SupervisedUserCircle" Color="Color.Info" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Customers"]</MudText>
+                    <MudText @bind-Value="@Stats.CustomersCount" Typo="Typo.h5">@Stats.CustomersCount</MudText>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Filled.House" Color="Color.Warning" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Projects"]</MudText>
+                    <MudText @bind-Value="@Stats.ProjectsCount" Typo="Typo.h5">@Stats.ProjectsCount</MudText>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Filled.DeliveryDining" Color="Color.Error" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Deliveries"]</MudText>
+                    <MudText @bind-Value="@Stats.DeliveriesCount" Typo="Typo.h5">@Stats.DeliveriesCount</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" sm="6" md="4" Class="d-flex flex-column gap-2">
+
+            <MudText Typo="Typo.overline"><strong>USERS STATS</strong></MudText>
+
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Material.Filled.Face" Color="Color.Tertiary" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Registered Users"]
+                    </MudText>
+                    <MudText Typo="Typo.h5">@UserCount</MudText>
+                </div>
+            </MudPaper>
+            <MudPaper Elevation="25" Class="d-flex flex-row pt-6 pb-4" Style="height:100px;">
+                <MudIcon Icon="@Icons.Material.Filled.Groups" Color="Color.Secondary" Class="mx-4"
+                Style="width:54px; height:54px;"></MudIcon>
+                <div>
+                    <MudText Typo="Typo.subtitle1" Class="mud-text-secondary mb-n1">@L["Registered Roles"]
+                    </MudText>
+                    <MudText Typo="Typo.h5">@RoleCount</MudText>
+                </div>
+            </MudPaper>
+        </MudItem>
+
+    </MudGrid>
+}
