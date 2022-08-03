@@ -1,6 +1,13 @@
-@inject IStringLocalizer<SimpleOrderTable> L
+@inject IStringLocalizer<SharedResource> L
 @inject IOrdersClient OrdersClient
 
+<MudContainer Class="d-flex align-start gap-2">
+    <MudText Typo="Typo.overline"><strong>@L["Orders"].ToString().ToUpper()</strong></MudText>
+    @if(SelectedSupplier.Id != Guid.Empty)
+    {
+        <MudText Typo="Typo.overline"><strong>@L["OF"] @SelectedSupplier.Name.ToUpper()</strong></MudText>
+    }
+</MudContainer>
 
 <EntityTable @ref="_table" TEntity="OrderDto" TId="Guid" TRequest="UpdateOrderRequest" Context="@Context"
     SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged">
@@ -16,7 +23,7 @@
             <SupplierAutocomplete @bind-Value="@context.SupplierId" Label="@L["Supplier"]"/>
         </MudItem>
         <MudItem xs="12" md="6">
-            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Name"]" />
+            <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Provider Name"]" />
         </MudItem>
         <MudItem xs="12" md="6">
             <MudTextField For="@(() => context.Description)" @bind-Value="context.Description"
@@ -29,6 +36,11 @@
     </ExtraActions>
 
 </EntityTable>
+
+<MudContainer Class="d-flex justify-end gap-1">
+    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
+    <MudText Color="Color.Default" Typo="Typo.body2"> @L["Click to see details."]</MudText>
+</MudContainer>
 
 @code
 {

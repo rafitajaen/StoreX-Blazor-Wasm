@@ -19,10 +19,10 @@
             <MudNumericField Label="@(L["Stock Units"])" @bind-Value="context.StockUnits" T="int" Variant="Variant.Text" Min="0" Max="9999"  />
         </MudItem>
         <MudItem xs="12" md="12">
-            <MudTextField Label="@L["Name"]" For="@(() => context.Name)" @bind-Value="context.Name" Disabled="!Context.AddEditModal.IsCreate"/>
+            <MudTextField Label="@L["Product Name"]" For="@(() => context.Name)" @bind-Value="context.Name" Disabled="!Context.AddEditModal.IsCreate"/>
         </MudItem>
         <MudItem xs="12" md="12">
-            <MudTextField Lines="3" Label="@L["Description"]" For="@(() => context.Description)" @bind-Value="context.Description" Disabled="!Context.AddEditModal.IsCreate"/>
+            <MudTextField Lines="3" Label="@L["Product Description"]" For="@(() => context.Description)" @bind-Value="context.Description" Disabled="!Context.AddEditModal.IsCreate"/>
         </MudItem>
 
         <MudItem xs="12" md="4">

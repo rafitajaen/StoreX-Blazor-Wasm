@@ -27,7 +27,7 @@
                 @if (Context.AdvancedSearchEnabled)
                 {
                     <div style="margin-top:10px!important">
-                        <MudCheckBox Label="All Columns" T="bool" Checked="Context.AllColumnsChecked"
+                        <MudCheckBox Label="@L["All Columns"]" T="bool" Checked="Context.AllColumnsChecked"
                             CheckedChanged="Context.AllColumnsCheckChanged"></MudCheckBox>
                         @foreach (var field in Context.Fields)
                         {
@@ -44,8 +44,8 @@
             Loading="@Loading" LoadingProgressColor="@Color.Secondary" ChildRowContent="@ChildRowContent" SelectedItem="@SelectedItem" SelectedItemChanged="@SelectedItemChanged" TotalItems="TotalItems">
 
             <NoRecordsContent>
-                <MudText Typo="Typo.body1"><strong>@Context.EntityName records are empty.</strong></MudText>
-                <MudText Typo="Typo.caption">TIP: Add a new one.</MudText>
+                <MudText Typo="Typo.body1"><strong>@Context.EntityNamePlural @L["records are empty."]</strong></MudText>
+                <MudText Typo="Typo.caption">@L["TIP: Add a new one."]</MudText>
             </NoRecordsContent>
 
             <ToolBarContent>

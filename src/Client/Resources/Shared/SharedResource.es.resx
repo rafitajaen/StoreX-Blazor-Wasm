@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Export" xml:space="preserve">
+    <value>Exportar</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Recargar</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Acciones</value>
+  </data>
+  <data name="Search for" xml:space="preserve">
+    <value>Buscar por</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Eliminar</value>
+  </data>
+  <data name="Advanced Search" xml:space="preserve">
+    <value>Búsqueda Avanzada</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Crear</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Añadir</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Pedido</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Pedidos</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Producto</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Productos</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Completado</value>
+  </data>
+  <data name="Synced With Stock" xml:space="preserve">
+    <value>Sincronizado con Stock</value>
+  </data>
+  <data name="Sync With Stock" xml:space="preserve">
+    <value>Sincronizar con Stock</value>
+  </data>
+  <data name="Synced" xml:space="preserve">
+    <value>Sincronizado</value>
+  </data>
+  <data name="Supplier" xml:space="preserve">
+    <value>Proveedor</value>
+  </data>
+  <data name="Suppliers" xml:space="preserve">
+    <value>Proveedores</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="Provider Name" xml:space="preserve">
+    <value>Nombre del Proveedor</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descripción</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Cantidad</value>
+  </data>
+  <data name="Unit Type" xml:space="preserve">
+    <value>Tipo de Unidad</value>
+  </data>
+  <data name="Base Price" xml:space="preserve">
+    <value>Precio Base</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Teléfono</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Sitio Web</value>
+  </data>
+  <data name="Profile Image" xml:space="preserve">
+    <value>Imágen de perfil</value>
+  </data>
+  <data name="is going to be deleted. Are you sure?" xml:space="preserve">
+    <value>se eliminará. ¿Está seguro?</value>
+  </data>
+  <data name="Create a Supplier" xml:space="preserve">
+    <value>Crear un Proveedor</value>
+  </data>
+  <data name="Create a Customer" xml:space="preserve">
+    <value>Crear un Cliente</value>
+  </data>
+  <data name="Edit a Supplier" xml:space="preserve">
+    <value>Editar un Proveedor</value>
+  </data>
+  <data name="Edit a Customer" xml:space="preserve">
+    <value>Editar un Cliente</value>
+  </data>
+  <data name="Delete a Supplier" xml:space="preserve">
+    <value>Eliminar un Proveedor</value>
+  </data>
+  <data name="Delete a Customer" xml:space="preserve">
+    <value>Eliminar un Cliente</value>
+  </data>
+  <data name="IN" xml:space="preserve">
+    <value>EN</value>
+  </data>
+  <data name="You were editing the order:" xml:space="preserve">
+    <value>Estabas editando el pedido:</value>
+  </data>
+  <data name="You were editing the project:" xml:space="preserve">
+    <value>Estabas editando el proyecto:</value>
+  </data>
+  <data name="You were editing the delivery:" xml:space="preserve">
+    <value>Estabas editando el albarán:</value>
+  </data>
+  <data name="TIP: You would prefer to set the quantity to zero instead of deleting the product." xml:space="preserve">
+    <value>TIP: Es preferible ajustar la cantidad a cero antes que eliminar un producto.</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="All Columns" xml:space="preserve">
+    <value>Todas las columnas</value>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Clientes</value>
+  </data>
+  <data name="Customer Name" xml:space="preserve">
+    <value>Nombre del Cliente</value>
+  </data>
+  <data name="Delivery" xml:space="preserve">
+    <value>Albarán</value>
+  </data>
+  <data name="Deliveries" xml:space="preserve">
+    <value>Albaranes</value>
+  </data>
+  <data name="Project" xml:space="preserve">
+    <value>Proyecto</value>
+  </data>
+  <data name="Projects" xml:space="preserve">
+    <value>Proyectos</value>
+  </data>
+  <data name="All products in" xml:space="preserve">
+    <value>Todos los productos en</value>
+  </data>
+  <data name="All deliveries in" xml:space="preserve">
+    <value>Todos los albaranes en</value>
+  </data>
+  <data name="Is this delivery completed?" xml:space="preserve">
+    <value>Completado</value>
+  </data>
+  <data name="Is this delivery synced with stock?" xml:space="preserve">
+    <value>Sincronizado</value>
+  </data>
+  <data name="Select a Project" xml:space="preserve">
+    <value>Selecciona Proyecto</value>
+  </data>
+  <data name="Delivery Name" xml:space="preserve">
+    <value>Nombre de Albarán</value>
+  </data>
+  <data name="Delivery Description" xml:space="preserve">
+    <value>Descripción de Albarán</value>
+  </data>
+  <data name="Click to see products." xml:space="preserve">
+    <value>Click para ver productos</value>
+  </data>
+  <data name="All projects" xml:space="preserve">
+    <value>Todos</value>
+  </data>
+  <data name="OF" xml:space="preserve">
+    <value>DE</value>
+  </data>
+  <data name="Is completed?" xml:space="preserve">
+    <value>Completado</value>
+  </data>
+  <data name="Select a Customer" xml:space="preserve">
+    <value>Selecciona un Cliente</value>
+  </data>
+  <data name="Project Name" xml:space="preserve">
+    <value>Nombre de Proyecto</value>
+  </data>
+  <data name="Project Description" xml:space="preserve">
+    <value>Descripción de Proyecto</value>
+  </data>
+  <data name="Click to see deliveries." xml:space="preserve">
+    <value>Click para ver albaranes</value>
+  </data>
+  <data name="records are empty." xml:space="preserve">
+    <value>no tiene ninguna entrada.</value>
+  </data>
+  <data name="TIP: Add a new one." xml:space="preserve">
+    <value>TIP: Añade una nueva</value>
+  </data>
+
+</root>

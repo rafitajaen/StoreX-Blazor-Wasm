@@ -1,8 +1,8 @@
-@inject IStringLocalizer<CustomerCard> L
+@inject IStringLocalizer<SharedResource> L
 @inject ICustomersClient CustomersClient
 
 <MudContainer Class="d-flex align-start gap-3">
-    <MudText Typo="Typo.overline"><strong>CUSTOMER</strong></MudText>
+    <MudText Typo="Typo.overline"><strong>@L["Customer"].ToString().ToUpper()</strong></MudText>
 </MudContainer>
 
 <MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">

@@ -136,7 +136,7 @@
     <value>Página de Facebook</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Salir</value>
+    <value>Desconectar</value>
   </data>
   <data name="Logout Confirmation" xml:space="preserve">
     <value>¿Realmente quiere salir del sistema?</value>
@@ -173,5 +173,20 @@
   </data>
   <data name="You are Logged Out." xml:space="preserve">
     <value>Ha cerrado sesión.</value>
+  </data>
+  <data name="Repositories" xml:space="preserve">
+    <value>Repositorios</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Contacto</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Documentación</value>
+  </data>
+  <data name="Useful Links" xml:space="preserve">
+    <value>Enlaces de interés</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Perfil</value>
   </data>
 </root>

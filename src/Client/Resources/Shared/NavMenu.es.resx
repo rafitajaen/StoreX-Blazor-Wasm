@@ -139,7 +139,7 @@
     <value>Comunicaciones</value>
   </data>
   <data name="Dashboard" xml:space="preserve">
-    <value>Panel de Control</value>
+    <value>Dashboard</value>
   </data>
   <data name="Document Management" xml:space="preserve">
     <value>Administración de Documentos</value>
@@ -182,5 +182,29 @@
   </data>
   <data name="Users" xml:space="preserve">
     <value>Usuarios</value>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="Stock Alerts" xml:space="preserve">
+    <value>Alertas de Stock</value>
+  </data>
+  <data name="Alerts" xml:space="preserve">
+    <value>Alertas</value>
+  </data>
+  <data name="Store Management" xml:space="preserve">
+    <value>Gestión de Tienda</value>
+  </data>
+  <data name="Suppliers" xml:space="preserve">
+    <value>Proveedores</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>Almacén</value>
+  </data>
+  <data name="Customers" xml:space="preserve">
+    <value>Clientes</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administración</value>
   </data>
 </root>

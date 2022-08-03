@@ -19,19 +19,19 @@
 
                 <MudContainer Class="d-flex flex-column gap-1 align-self-center align-center justify-center mt-16">
                     <MudButton Class="mt-16" OnClick="@OnFindACustomer" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
-                        Find a Customer
+                        @L["Find a Customer"]
                     </MudButton>
 
                     <MudText Typo="Typo.overline">or</MudText>
 
                     <MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" DisableElevation="true" Color="Color.Secondary" OnClick="@(()=> _seb.OnCreate())">
-                        Add a new Customer
+                        @L["Add a new Customer"]
                     </MudButton>
 
-                    <MudText Typo="Typo.overline">or</MudText>
+                    <MudText Typo="Typo.overline">@L["or"]</MudText>
 
                     <MudButton Class="mb-16" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
-                        VIEW ALL
+                        @L["View All"]
                     </MudButton>
                 </MudContainer>
 
@@ -46,12 +46,12 @@
 
                 <MudSpacer />
                 <MudButton Class="mb-2" OnClick="@OnFindACustomer" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
-                    Find a Customer
+                    @L["Find a Customer"]
                 </MudButton>
                 @if(!viewAll)
                 {
                     <MudButton Class="mb-2" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
-                        VIEW ALL
+                        @L["View All"]
                     </MudButton>
                 }
                 <MudSpacer />

@@ -1,15 +1,15 @@
-@inject IStringLocalizer<SimpleProjectTable> L
+@inject IStringLocalizer<SharedResource> L
 @inject IProjectsClient ProjectsClient
 
 <MudContainer Class="d-flex align-start gap-2">
-    <MudText Typo="Typo.overline"><strong>PROJECTS</strong></MudText>
+    <MudText Typo="Typo.overline"><strong>@L["Projects"].ToString().ToUpper()</strong></MudText>
     @if(SelectedCustomer.Id != Guid.Empty)
     {
-        <MudText Typo="Typo.overline"><strong>OF @SelectedCustomer.Name.ToUpper()</strong></MudText>
+        <MudText Typo="Typo.overline"><strong>@L["OF"] @SelectedCustomer.Name.ToUpper()</strong></MudText>
     }
     else
     {
-        <MudText Typo="Typo.overline"> (All projects)</MudText>
+        <MudText Typo="Typo.overline"> (@L["All projects"])</MudText>
     }
 </MudContainer>
 
@@ -18,7 +18,7 @@
 
     <EditFormContent>
         <MudItem xs="12" md="6">
-            <MudCheckBox @bind-Checked="@context.IsCompleted" Label="@L["Is this project completed?"]"/>
+            <MudCheckBox @bind-Checked="@context.IsCompleted" Label="@L["Is completed?"]"/>
         </MudItem>
         <MudItem xs="12" md="12">
             <CustomerAutocomplete @bind-Value="@context.CustomerId" Label="@L["Select a Customer"]"/>
@@ -35,7 +35,7 @@
 
 <MudContainer Class="d-flex justify-end gap-1">
     <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
-    <MudText Color="Color.Default" Typo="Typo.body2"> Click to see deliveries.</MudText>
+    <MudText Color="Color.Default" Typo="Typo.body2"> @L["Click to see deliveries."]</MudText>
 </MudContainer>
 
 @code

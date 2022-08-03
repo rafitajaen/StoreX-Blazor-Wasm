@@ -1,5 +1,9 @@
-@inject IStringLocalizer<SupplierCard> L
+@inject IStringLocalizer<SharedResource> L
 @inject ISuppliersClient SuppliersClient
+
+<MudContainer Class="d-flex align-start gap-3">
+    <MudText Typo="Typo.overline"><strong>@L["Supplier"].ToString().ToUpper()</strong></MudText>
+</MudContainer>
 
 <MudCard Elevation="25" Square="true" Class="@Class" Style="@Style">
 
@@ -26,9 +30,9 @@
             <CardHeaderActions>
                 <MudSpacer />
                 <MudMenu Icon="@Icons.Material.Filled.Settings" Color="Color.Default" Dense="true" OffsetX="true" Direction="Direction.Bottom">
-                    <MudMenuItem Style="color:orange!important" OnClick="@(()=> _seb.OnEdit())">Edit</MudMenuItem>
-                    <MudMenuItem Style="color:red!important" OnClick="@(()=> _seb.OnDelete())">Delete</MudMenuItem>
-                    <MudMenuItem Style="color:green!important" OnClick="@(()=> _seb.OnCreate())">Create</MudMenuItem>
+                    <MudMenuItem Style="color:orange!important" OnClick="@(()=> _seb.OnEdit())">@L["Edit"]</MudMenuItem>
+                    <MudMenuItem Style="color:red!important" OnClick="@(()=> _seb.OnDelete())">@L["Delete"]</MudMenuItem>
+                    <MudMenuItem Style="color:green!important" OnClick="@(()=> _seb.OnCreate())">@L["Create"]</MudMenuItem>
                 </MudMenu>
             </CardHeaderActions>
 

@@ -9,7 +9,7 @@ namespace FSH.BlazorWebAssembly.Client.Components.Store.Customers;
 public class CustomerAutocomplete : MudAutocomplete<Guid>
 {
     [Inject]
-    private IStringLocalizer<CustomerAutocomplete> L { get; set; } = default!;
+    private IStringLocalizer<SharedResource> L { get; set; } = default!;
     [Inject]
     private ICustomersClient CustomersClient { get; set; } = default!;
     [Inject]

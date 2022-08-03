@@ -19,19 +19,19 @@
 
                 <MudContainer Class="d-flex flex-column gap-1 align-self-center align-center justify-center mt-16">
                     <MudButton Class="mt-16" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
-                        Find a Supplier
+                        @L["Find a Supplier"]
                     </MudButton>
 
-                    <MudText Typo="Typo.overline">or</MudText>
+                    <MudText Typo="Typo.overline">@L["or"]</MudText>
 
                     <MudButton Variant="Variant.Filled" StartIcon="@Icons.Filled.Add" DisableElevation="true" Color="Color.Secondary" OnClick="@(()=> _seb.OnCreate())">
-                        Add a new Supplier
+                        @L["Add a new Supplier"]
                     </MudButton>
 
-                    <MudText Typo="Typo.overline">or</MudText>
+                    <MudText Typo="Typo.overline">@L["or"]</MudText>
 
                     <MudButton Class="mb-16" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
-                        VIEW ALL
+                        @L["View All"]
                     </MudButton>
                 </MudContainer>
 
@@ -46,12 +46,12 @@
 
                 <MudSpacer />
                 <MudButton Class="mb-2" OnClick="@OnFindASupplier" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Outlined.AddToPhotos">
-                    Find a Supplier
+                    @L["Find a Supplier"]
                 </MudButton>
                 @if(!viewAll)
                 {
                     <MudButton Class="mb-2" OnClick="OnViewAll" Variant="Variant.Filled" Color="Color.Tertiary">
-                        VIEW ALL
+                        @L["View All"]
                     </MudButton>
                 }
                 <MudSpacer />
@@ -59,32 +59,11 @@
             </MudItem>
 
             <MudItem xs="10" sm="3">
-
-                <MudContainer Class="d-flex align-start gap-3">
-                    <MudText Typo="Typo.overline"><strong>SUPPLIER</strong></MudText>
-                </MudContainer>
-
                 <SupplierCard Style="my-6 mr-8" SelectedSupplier="@selectedSupplier" OnCreatedSupplier="OnCreatedSupplier"/>
-
             </MudItem>
 
             <MudItem xs="12" sm="9" >
-
-                <MudContainer Class="d-flex align-start gap-2">
-                    <MudText Typo="Typo.overline"><strong>ORDERS</strong></MudText>
-                    @if(selectedSupplier.Id != Guid.Empty)
-                    {
-                        <MudText Typo="Typo.overline"><strong>OF @selectedSupplier.Name.ToUpper()</strong></MudText>
-                    }
-                </MudContainer>
-
                 <SimpleOrderTable SelectedSupplier="@selectedSupplier" SelectedItem="selectedOrder" SelectedItemChanged="OnSelectedItemChanged" ViewAll="viewAll"/>
-
-                <MudContainer Class="d-flex justify-end gap-1">
-                    <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
-                    <MudText Color="Color.Default" Typo="Typo.body2"> Click to see details.</MudText>
-                </MudContainer>
-
             </MudItem>
         }
         @if(isProductsRefreshed)
@@ -96,7 +75,7 @@
     }
 </MudGrid>
 
-<MudMessageBox @ref="mbox" Title="Find a Supplier" NoText="View All" YesText="Select Supplier">
+<MudMessageBox @ref="mbox" Title="@L["Find a Supplier"]" NoText="@L["View All"]" YesText="@L["Select Supplier"]">
     <MessageContent>
         <SupplierAutocomplete @bind-Value="@searchSupplierId"/>
     </MessageContent>

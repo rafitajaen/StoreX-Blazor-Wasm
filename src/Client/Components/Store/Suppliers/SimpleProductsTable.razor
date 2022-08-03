@@ -1,12 +1,12 @@
-@inject IStringLocalizer<SimpleProductsTable> L
+@inject IStringLocalizer<SharedResource> L
 @inject IOrderProductsClient OrderProductsClient
 
 <MudContainer Class="d-flex align-start gap-1">
 
-    <MudText Typo="Typo.overline"><strong>PRODUCTS</strong></MudText>
+    <MudText Typo="Typo.overline"><strong>@L["Products"].ToString().ToUpper()</strong></MudText>
     @if(SelectedOrder.Id != Guid.Empty)
     {
-        <MudText Typo="Typo.overline"><strong>IN ORDER: @SelectedOrder.Name.ToUpper()</strong></MudText>
+        <MudText Typo="Typo.overline"><strong>@L["IN"] @SelectedOrder.Name.ToUpper()</strong></MudText>
         <MudSpacer />
     }
 
@@ -18,7 +18,7 @@
 
     <EditFormContent>
         <MudItem xs="12" md="12">
-            <MudText Typo="Typo.body1">You were editing the order :<strong>@SelectedOrder.Name</strong></MudText>
+            <MudText Typo="Typo.body1">@L["You were editing the order:"] <strong>@SelectedOrder.Name</strong></MudText>
         </MudItem>
         <MudItem xs="12" md="6">
             <OrderAutocomplete @bind-Value="@context.OrderId" Label="@L["Order"]" Disabled="!Context.AddEditModal.IsCreate"/>
@@ -37,7 +37,7 @@
 
     <MudSpacer />
     <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
-    <MudText Color="Color.Default" Typo="Typo.body2"> TIP: You would prefer to set the quantity to zero instead of deleting the product.</MudText>
+    <MudText Color="Color.Default" Typo="Typo.body2"> @L["TIP: You would prefer to set the quantity to zero instead of deleting the product."]</MudText>
 
 </MudContainer>
 

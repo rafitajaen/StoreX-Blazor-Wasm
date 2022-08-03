@@ -1,12 +1,12 @@
-@inject IStringLocalizer<SimpleProductsTable> L
+@inject IStringLocalizer<SharedResource> L
 @inject IDeliveryProductsClient DeliveryProductsClient
 
 <MudContainer Class="d-flex align-start gap-2">
 
-    <MudText Typo="Typo.overline"><strong>PRODUCTS</strong></MudText>
+    <MudText Typo="Typo.overline"><strong>@L["Products"].ToString().ToUpper()</strong></MudText>
     @if(SelectedDelivery.Id != Guid.Empty)
     {
-        <MudText Typo="Typo.overline"> (All products in @SelectedDelivery.Name)</MudText>
+        <MudText Typo="Typo.overline"> (@L["All products in"] @SelectedDelivery.Name)</MudText>
     }
 
 </MudContainer>
@@ -17,7 +17,8 @@
 
     <EditFormContent>
         <MudItem xs="12" md="6">
-            <DeliveryAutocomplete @bind-Value="@context.DeliveryId" Label="@L["Delivery"]" Disabled="!Context.AddEditModal.IsCreate" HelperText="@($"INFO: You were in {@SelectedDelivery.Name}")"/>
+            <MudText Typo="Typo.body1">@L["You were editing the delivery:"] <strong>@SelectedDelivery.Name</strong></MudText>
+            <DeliveryAutocomplete @bind-Value="@context.DeliveryId" Label="@L["Delivery"]" Disabled="!Context.AddEditModal.IsCreate"/>
         </MudItem>
         <MudItem xs="12" md="6">
             <MudTextField T="int" For="@(() => context.Quantity)" @bind-Value="context.Quantity" Label="@L["Quantity"]" />
@@ -33,7 +34,7 @@
 
     <MudSpacer />
     <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
-    <MudText Color="Color.Default" Typo="Typo.body2"> TIP: You would prefer to set the quantity to zero instead of deleting the product.</MudText>
+    <MudText Color="Color.Default" Typo="Typo.body2"> @L["TIP: You would prefer to set the quantity to zero instead of deleting the product."]</MudText>
 
 </MudContainer>
 

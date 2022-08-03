@@ -29,7 +29,7 @@
             else
             {
                 <MudItem xs="12" md="12">
-                    <MudText Typo="Typo.body1"><strong>@SelectedSupplier.Name</strong> is going to be deleted. Are you sure?</MudText>
+                    <MudText Typo="Typo.body1"><strong>@SelectedSupplier.Name</strong> @L["is going to be deleted. Are you sure?"]</MudText>
                 </MudItem>
             }
             </MudGrid>
@@ -53,7 +53,7 @@
     public async Task OnCreate()
     {
         #pragma warning disable BL0005
-        mbox.Title = "Create a Supplier";
+        mbox.Title = @L["Create a Supplier"];
         #pragma warning restore BL0005
         contextSupplier = new SupplierDto();
 
@@ -69,7 +69,7 @@
     public async Task OnEdit()
     {
         #pragma warning disable BL0005
-        mbox.Title = "Edit a Supplier";
+        mbox.Title = @L["Edit a Supplier"];
         #pragma warning restore BL0005
         contextSupplier = SelectedSupplier;
 
@@ -84,7 +84,7 @@
     public async Task OnDelete()
     {
         #pragma warning disable BL0005
-        mbox.Title = "Delete a Supplier";
+        mbox.Title = @L["Delete a Supplier"];
         #pragma warning restore BL0005
         isDelete = true;
 

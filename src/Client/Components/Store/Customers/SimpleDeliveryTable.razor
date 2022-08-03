@@ -1,13 +1,13 @@
-@inject IStringLocalizer<SimpleDeliveryTable> L
+@inject IStringLocalizer<SharedResource> L
 @inject IDeliveriesClient DeliveriesClient
 
 <MudContainer Class="d-flex align-start gap-2">
 
-    <MudText Typo="Typo.overline"><strong>DELIVERIES</strong></MudText>
+    <MudText Typo="Typo.overline"><strong>@L["Deliveries"].ToString().ToUpper()</strong></MudText>
 
     @if(SelectedProject.Id != Guid.Empty)
     {
-        <MudText Typo="Typo.overline">(All deliveries in @SelectedProject.Name)</MudText>
+        <MudText Typo="Typo.overline">(@L["All deliveries in"] @SelectedProject.Name)</MudText>
     }
 
 </MudContainer>
@@ -23,7 +23,8 @@
             <MudCheckBox @bind-Checked="@context.IsSyncWithStock" Label="@L["Is this delivery synced with stock?"]"/>
         </MudItem>
         <MudItem xs="12" md="12">
-            <ProjectAutocomplete @bind-Value="@context.ProjectId" Label="@L["Select a Project"]" HelperText="@($"INFO: You were in {@SelectedProject.Name}")"/>
+            <MudText Typo="Typo.body1">@L["You were editing the project:"] <strong>@SelectedProject.Name</strong></MudText>
+            <ProjectAutocomplete @bind-Value="@context.ProjectId" Label="@L["Select a Project"]" />
         </MudItem>
         <MudItem xs="12" md="6">
             <MudTextField T="string" For="@(() => context.Name)" @bind-Value="context.Name" Label="@L["Delivery Name"]" />
@@ -41,7 +42,7 @@
 
 <MudContainer Class="d-flex justify-end gap-1">
     <MudIcon Icon="@Icons.Outlined.Info" Color="Color.Default"/>
-    <MudText Color="Color.Default" Typo="Typo.body2"> Click to see products.</MudText>
+    <MudText Color="Color.Default" Typo="Typo.body2"> @L["Click to see products."]</MudText>
 </MudContainer>
 
 @code
