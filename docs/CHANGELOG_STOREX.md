@@ -1,6 +1,21 @@
 # StoreX Blazor WebAssembly Changelog
 
-## v0.0.7 - [Brand Customization and Spanish Localization]()
+## v0.0.9 - [Update Index and Ready for production]()
+
+**branch :** _storex_
+
+> This version is compatible with [StoreX-WebAPI v0.0.12](https://github.com/rafitajaen/StoreX-WebAPI/tree/6c3756d3c45f5c842b41708e53cbd79e3f40dbbb)
+
+    Add:
+        - src/Client/Resources/ : Localization files for Spanish.
+        - README: A common readme for API and WASM repositories
+
+    Edit:
+        - src/Client/Shared/ : Customize NavMenu, Main Layout, Base Layout and index to apply StoreX brand.
+        - src/Client/Pages/ : Updates for localization strings.
+        - Update Logo.
+
+## v0.0.8 - [Brand Customization and Spanish Localization](https://github.com/rafitajaen/StoreX-Blazor-Wasm/tree/e3481d27552182f6e6d3e0772c5f7052e2f97bed)
 
 **branch :** _storex_
 

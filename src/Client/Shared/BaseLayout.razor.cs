@@ -1,5 +1,6 @@
 ﻿using FSH.BlazorWebAssembly.Client.Infrastructure.Preferences;
 using FSH.BlazorWebAssembly.Client.Infrastructure.Theme;
+using Microsoft.Extensions.Localization;
 using MudBlazor;
 
 namespace FSH.BlazorWebAssembly.Client.Shared;
@@ -21,11 +22,11 @@ public partial class BaseLayout
         {
             config.BackgroundBlurred = true;
             config.Icon = Icons.Custom.Brands.GitHub;
-            config.Action = "Star us on Github!";
+            config.Action = "Get in touch on LinkedIn!";
             config.ActionColor = Color.Primary;
             config.Onclick = snackbar =>
             {
-                Navigation.NavigateTo("https://github.com/rafitajaen/StoreX-WebAPI");
+                Navigation.NavigateTo("https://www.linkedin.com/in/rafitajaen/");
                 return Task.CompletedTask;
             };
         });

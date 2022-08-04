@@ -315,5 +315,11 @@
   <data name="TIP: Add a new one." xml:space="preserve">
     <value>TIP: Añade una nueva</value>
   </data>
+  <data name="Like this app? " xml:space="preserve">
+    <value>¿Te gusta esta app? </value>
+  </data>
+  <data name="Get in touch on LinkedIn!" xml:space="preserve">
+    <value>Ponte en contacto en LinkedIn</value>
+  </data>
 
 </root>
