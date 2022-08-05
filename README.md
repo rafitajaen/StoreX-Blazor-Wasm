@@ -36,6 +36,12 @@ The aim of both repositories is to familiarise myself with the creation of a .NE
 
 ## Getting Started
 
+You can **visit the LIVE Demo** : [StoreX - Store Management made simple](https://storex-app.azurewebsites.net/)
+
+Also, if you are interested in checking the OpenAPI you can do so at the following link: [StoreX - OpenAPI](https://storex-web.azurewebsites.net/swagger)
+
+or **run the app** in local by following next steps:
+
 1. Make sure you have the API running. For that you have to clone StoreX Backend and run it.
 
    > git clone https://github.com/rafitajaen/StoreX-WebAPI.git
